@@ -13,7 +13,7 @@ import br.edu.ifpb.pweb2.leprechaun.Repository.UsuarioRepository;
 import br.edu.ifpb.pweb2.leprechaun.Service.ClienteService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/usuarios")
 public class UsuarioController {
     
    @Autowired
@@ -22,7 +22,7 @@ public class UsuarioController {
    @Autowired
    private ClienteService clienteService;
     
-    @GetMapping("/usuarios")
+    @GetMapping("/")
     public List<Usuario> getNome() {
         return this.usuarioRepository.findAll();
     }

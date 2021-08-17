@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     public List<Usuario> findAll();
 
-    public List<Usuario> findByControlador(boolean tipo);
+    public List<Usuario> findByTipoUsuario(TipoUsuario tipo);
 }

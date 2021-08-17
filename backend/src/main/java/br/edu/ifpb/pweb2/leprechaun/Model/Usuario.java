@@ -27,8 +27,5 @@ public class Usuario {
     private LocalDate data_nascimento;
     private String login;
     private String senha;
-    private boolean controlador;
-
-    // @Enumerated(EnumType.STRING)
-    // private TipoUsuario tipoUsuario = TipoUsuario.CLIENTE;
+    private TipoUsuario tipoUsuario = TipoUsuario.CLIENTE;
 }

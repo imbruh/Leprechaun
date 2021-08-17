@@ -16,6 +16,10 @@ public class ClienteService {
     UsuarioRepository usuarioRepository;
 
     public List<Usuario> getClientes() {
-        return usuarioRepository.findByControlador(false);
+        return usuarioRepository.findByTipoUsuario(TipoUsuario.CLIENTE);
+    }
+    
+    public void apostar(Long idCliente, Long idSorteio, List<Integer> numEscolhidos ) {
+    	
     }
 }
