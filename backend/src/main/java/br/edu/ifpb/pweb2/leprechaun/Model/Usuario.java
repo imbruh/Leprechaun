@@ -2,6 +2,7 @@ package br.edu.ifpb.pweb2.leprechaun.Model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,10 +23,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(nullable = false)
     private String nome;
     private String cpf;
     private LocalDate data_nascimento;
     private String login;
     private String senha;
-    private TipoUsuario tipoUsuario = TipoUsuario.CLIENTE;
+    private TipoUsuario tipoUsuario;
 }

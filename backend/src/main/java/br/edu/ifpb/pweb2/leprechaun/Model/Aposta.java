@@ -25,6 +25,6 @@ public class Aposta {
 	@JoinColumn(name="cliente_id")
 	private Usuario cliente;
 	
-	private int valor;
-	private int[] numEscolhidos;
+	private double valor;
+	private String[] numEscolhidos;
 }

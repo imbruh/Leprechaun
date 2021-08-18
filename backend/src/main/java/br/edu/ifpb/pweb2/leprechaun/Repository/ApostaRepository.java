@@ -6,5 +6,4 @@ import br.edu.ifpb.pweb2.leprechaun.Model.Aposta;
 
 public interface ApostaRepository extends JpaRepository<Aposta, Long>{
 
-	
 }

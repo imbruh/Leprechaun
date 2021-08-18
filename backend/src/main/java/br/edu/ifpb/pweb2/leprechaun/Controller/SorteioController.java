@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +33,7 @@ public class SorteioController {
     }
 
     @PostMapping("/criar")
-    public void criarSorteio(@RequestBody Sorteio sorteio) {
-        this.sorteioService.criarSorteio(sorteio.getId(), sorteio.getDezenasSorteadas(), LocalDateTime.now(), sorteio.getValorPremio());
+    public String criarSorteio(@RequestBody Sorteio sorteio) {
+        return this.sorteioService.criarSorteio(sorteio.getId(), sorteio.getDezenasSorteadas(), sorteio.getDataHora(), sorteio.getValorPremio());
     }
 }
