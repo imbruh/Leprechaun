@@ -1,7 +1,5 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
-import java.util.function.Supplier;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +40,7 @@ public class ApostaService {
                         cont ++;
                     }
                 }
-                else if (cont == 2){
+                else {
                     return "Não é permitido numeros iguais";
                 }
             }
