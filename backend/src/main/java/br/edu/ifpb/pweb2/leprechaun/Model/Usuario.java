@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.sun.istack.NotNull;
 
 import lombok.Data;
 
@@ -30,4 +30,15 @@ public class Usuario {
     private String login;
     private String senha;
     private TipoUsuario tipoUsuario;
+
+    public Usuario(){};
+
+    public Usuario(String nome, String cpf, LocalDate data_nascimento, String login, String senha, TipoUsuario tipoUsuario){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.data_nascimento = data_nascimento;
+        this.login = login;
+        this.senha = senha;
+        this.tipoUsuario = tipoUsuario;
+    }
 }

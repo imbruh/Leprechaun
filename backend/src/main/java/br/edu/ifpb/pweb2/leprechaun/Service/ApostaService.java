@@ -1,10 +1,9 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
-import java.util.function.Supplier;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
 import br.edu.ifpb.pweb2.leprechaun.Model.Aposta;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
 import br.edu.ifpb.pweb2.leprechaun.Repository.ApostaRepository;
@@ -19,18 +18,16 @@ public class ApostaService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public String criar(Long idCliente, String[] numEscolhidos){
-        Usuario cliente = usuarioRepository.findById(idCliente).orElse(null);
+    public void criar(Long idCliente, String[] numEscolhidos){
 
-        if(cliente == null) {
-            return "Cliente inexistente";
-        }
-
+    	Usuario cliente = usuarioRepository.findById(idCliente).orElseThrow(
+    			()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado!"));
+        
         int qntNumEscolhidos = numEscolhidos.length;
         double valor = 0;
 
         if(qntNumEscolhidos < 6 || qntNumEscolhidos > 10) {
-            return "Escolha entre 6 e 10 numeros";
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Escolha entre 6 e 10 numeros");
         }
         
         for(String n1: numEscolhidos) {
@@ -42,8 +39,8 @@ public class ApostaService {
                         cont ++;
                     }
                 }
-                else if (cont == 2){
-                    return "Não é permitido numeros iguais";
+                else{
+                    throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Não é permitido números iguais");
                 }
             }
         }
@@ -71,8 +68,6 @@ public class ApostaService {
         aposta.setNumEscolhidos(numEscolhidos);
         
         apostaRepository.save(aposta);
-
-        return "aposta criada";
     }
 
 }
