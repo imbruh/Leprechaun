@@ -1,12 +1,10 @@
 package br.edu.ifpb.pweb2.leprechaun.Controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +31,8 @@ public class SorteioController {
     }
 
     @PostMapping("/criar")
-    public String criarSorteio(@RequestBody Sorteio sorteio) {
-        return this.sorteioService.criarSorteio(sorteio.getId(), sorteio.getDezenasSorteadas(), sorteio.getDataHora(), sorteio.getValorPremio());
+    public ResponseEntity<?> criarSorteio(@RequestBody Sorteio sorteio) {
+        this.sorteioService.criarSorteio(sorteio.getId(), sorteio.getDezenasSorteadas(), sorteio.getDataHora(), sorteio.getValorPremio());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class ClienteService {
         return usuarioRepository.findByTipoUsuario(TipoUsuario.CLIENTE);
     }
     
-    public void apostar(Long idCliente, Long idSorteio, List<Integer> numEscolhidos ) {
-    	
+    public void cadastrarCliente(String nome, String cpf, LocalDate data_nascimento, String login, String senha){
+        Usuario cliente = new Usuario(nome,cpf,data_nascimento,login,senha,TipoUsuario.CLIENTE);
+        usuarioRepository.save(cliente);
+        
     }
 }

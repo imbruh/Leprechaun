@@ -23,7 +23,9 @@ public class SorteioService {
 	private UsuarioRepository usuarioRepository;
 	
 	public String criarSorteio(Long idControlador, String[] dezenasSorteadas, LocalDateTime dataHora, double valor) {
-		Usuario controlador = usuarioRepository.findByIdAndTipoUsuario(idControlador, TipoUsuario.CONTROLADOR);
+		Sorteio ultimoSorteio = sorteioRepository.findByDataHora(dataHora);
+        
+        Usuario controlador = usuarioRepository.findByIdAndTipoUsuario(idControlador, TipoUsuario.CONTROLADOR);
        
         if(controlador == null) {
             return "Controlador inexistente";
@@ -35,7 +37,6 @@ public class SorteioService {
             String[] dezenas = new String[6];
 			Random random = new Random();
 			int cont = 0;
-            System.out.println(dezenas[0]);
 			while(dezenas[5]==null) {
 				int num = random.nextInt(60) + 1;
 				String numConvert = (num < 10) ? ("0" + num) : Integer.toString(num);
@@ -46,7 +47,6 @@ public class SorteioService {
                         if(n.equals(numConvert)){
                             existe = true;
                         }
-                        System.out.println(num);
                     }	
 				}
 				if(!existe) {              
@@ -60,6 +60,7 @@ public class SorteioService {
             sorteio.setTipo(TipoSorteio.NAO_ALEATORIO);
         }
 		sorteio.setDezenasSorteadas(dezenasSorteadas);
+        System.out.println(LocalDateTime.now());
 		sorteio.setDataHora(dataHora);
 		sorteio.setValorPremio(valor);	
 		sorteio.setControlador(controlador);	

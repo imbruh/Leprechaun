@@ -1,7 +1,6 @@
 package br.edu.ifpb.pweb2.leprechaun.Model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -24,6 +24,8 @@ public class Sorteio {
     private Long id;
 	
 	private String[] dezenasSorteadas;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) 
 	private LocalDateTime dataHora;
 	private double valorPremio;
 	private TipoSorteio tipo;

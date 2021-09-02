@@ -1,7 +1,5 @@
 package br.edu.ifpb.pweb2.leprechaun.Model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
