@@ -1,10 +1,13 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.ifpb.pweb2.leprechaun.Model.Sorteio;
 import br.edu.ifpb.pweb2.leprechaun.Model.TipoSorteio;
@@ -23,7 +26,14 @@ public class SorteioService {
 	private UsuarioRepository usuarioRepository;
 	
 	public String criarSorteio(Long idControlador, String[] dezenasSorteadas, LocalDateTime dataHora, double valor) {
-		Sorteio ultimoSorteio = sorteioRepository.findByDataHora(dataHora);
+		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
+        String diaDisponivel = sorteioRepository.ultimaData(ultimoSorteio.getDataHora()).replace(" ","T");
+
+        LocalDateTime diaDisponivelConvert = LocalDateTime.parse(diaDisponivel);
+
+        if (dataHora.isBefore(diaDisponivelConvert)) {
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Dia indisponivel");
+        }
         
         Usuario controlador = usuarioRepository.findByIdAndTipoUsuario(idControlador, TipoUsuario.CONTROLADOR);
        
