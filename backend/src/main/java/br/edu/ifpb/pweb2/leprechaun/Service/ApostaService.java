@@ -1,15 +1,19 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import br.edu.ifpb.pweb2.leprechaun.Model.Aposta;
 import br.edu.ifpb.pweb2.leprechaun.Model.ApostasFavoritas;
+import br.edu.ifpb.pweb2.leprechaun.Model.Sorteio;
 import br.edu.ifpb.pweb2.leprechaun.Model.TipoUsuario;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
 import br.edu.ifpb.pweb2.leprechaun.Repository.ApostaRepository;
 import br.edu.ifpb.pweb2.leprechaun.Repository.ApostasFavoritasRepository;
+import br.edu.ifpb.pweb2.leprechaun.Repository.SorteioRepository;
 import br.edu.ifpb.pweb2.leprechaun.Repository.UsuarioRepository;
 
 @Service
@@ -24,10 +28,25 @@ public class ApostaService {
     @Autowired
     ApostasFavoritasRepository apostasFavoritasRepository;
 
+    @Autowired
+    SorteioRepository sorteioRepository;
+
     public void criar(Long idCliente, String[] numEscolhidos){
 
     	Usuario cliente = usuarioRepository.findById(idCliente).orElseThrow(
     			()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado!"));
+
+    	Sorteio sorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
+    	
+    	if (sorteio.getDataHora().isBefore(LocalDateTime.now())){
+    		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Não ha sorteio em aberto no momento");
+    	}
+    	
+    	Aposta apostaRepetida = apostaRepository.findByClienteAndNumEscolhidosAndSorteio(cliente, numEscolhidos, sorteio);
+    	
+    	if(apostaRepetida != null) {
+    		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Não é permitido a mesma aposta");
+    	}
         
         int qntNumEscolhidos = numEscolhidos.length;
         double valor = 0;
@@ -41,7 +60,6 @@ public class ApostaService {
             for(String n2: numEscolhidos) {
                 if(cont < 2){
                     if(n2.equals(n1)) {
-                        System.out.println(n1 + " " + n2);
                         cont ++;
                     }
                 }
@@ -72,22 +90,26 @@ public class ApostaService {
         aposta.setCliente(cliente);
         aposta.setValor(valor);
         aposta.setNumEscolhidos(numEscolhidos);
+        aposta.setSorteio(sorteio);
         
         apostaRepository.save(aposta);
     }
 
     public void criarApostaFavorita(Long idCliente, Long idAposta) {
-
-        //Colocar condição para nao repetir os mesmos parametros
-       
+     
         Usuario cliente = usuarioRepository.findById(idCliente).orElseThrow(
             ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado!"));
 
         if(cliente.getTipoUsuario() == TipoUsuario.CLIENTE) {
             Aposta aposta = apostaRepository.findById(idAposta).orElseThrow(
             ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aposta não encontrada!"));
-
-       
+            
+            ApostasFavoritas apostaFavRepetida = apostasFavoritasRepository.findByClienteAndAposta(cliente, aposta);
+            
+            if(apostaFavRepetida != null) {
+            	throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Essa aposta ja foi salva");
+            }
+                
             ApostasFavoritas apostasFavs = new ApostasFavoritas();
             apostasFavs.setCliente(cliente);
             apostasFavs.setAposta(aposta);

@@ -13,4 +13,5 @@ public interface SorteioRepository extends JpaRepository<Sorteio, Long>{
 
     @Query(value="select date_add(?1, interval 7 day)", nativeQuery = true )
     String ultimaData(LocalDateTime dia);
+
 }

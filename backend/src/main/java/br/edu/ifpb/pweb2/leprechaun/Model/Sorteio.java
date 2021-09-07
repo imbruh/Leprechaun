@@ -33,8 +33,4 @@ public class Sorteio {
 	@ManyToOne
 	@JoinColumn(name="controlador_id")
 	private Usuario controlador;
-	
-	@ManyToOne
-	@JoinColumn(name="aposta_id")
-	private Aposta aposta;
 }

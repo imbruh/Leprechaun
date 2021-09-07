@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifpb.pweb2.leprechaun.Model.ApostasFavoritas;
+import br.edu.ifpb.pweb2.leprechaun.Dto.ApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.ApostasFavoritasDTO;
 import br.edu.ifpb.pweb2.leprechaun.Service.ApostaService;
 
@@ -21,8 +22,8 @@ public class ApostaController {
     ApostaService apostaService;
    
     @PostMapping("/criar")
-    public ResponseEntity<?> criarAposta(@RequestParam Long idCliente, @RequestParam String[] numEscolhidos ) {
-        this.apostaService.criar(idCliente, numEscolhidos);
+    public ResponseEntity<?> criarAposta(@RequestBody ApostaDTO dto) {
+        this.apostaService.criar(dto.getIdCliente(), dto.getNumerosEscolhidos());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

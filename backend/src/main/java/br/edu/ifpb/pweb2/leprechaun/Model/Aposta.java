@@ -25,4 +25,8 @@ public class Aposta {
 	
 	private double valor;
 	private String[] numEscolhidos;
+	
+	@ManyToOne
+	@JoinColumn(name="sorteio_id")
+	private Sorteio sorteio;
 }
