@@ -38,7 +38,7 @@ public class ApostaService {
 
     	Sorteio sorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
     	
-    	if (sorteio.getDataHora().isBefore(LocalDateTime.now())){
+    	if (sorteio.getDataHora().isBefore(LocalDateTime.now()) || sorteio.getDezenasSorteadas()!=null){
     		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Não ha sorteio em aberto no momento");
     	}
     	
