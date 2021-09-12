@@ -1,6 +1,7 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -120,5 +121,16 @@ public class ApostaService {
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "O usuário nao é um cliente");
         }
     }
-
+    
+    public List<String[]> listarApostasFavoritas(Long idCliente) {
+    	this.usuarioRepository.findById(idCliente).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado!"));
+    	
+    	List<String[]> numApostasFavoritas = this.apostasFavoritasRepository.getByCliente(idCliente);
+    	
+    	if(numApostasFavoritas == null || numApostasFavoritas.isEmpty()) {
+    		 throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Você não possui apostas favoritas cadastradas");
+    	}
+    	
+    	return numApostasFavoritas;
+    }
 }

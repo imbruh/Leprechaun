@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -21,9 +22,11 @@ public class ApostasFavoritas {
 
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
+	@NotNull
 	private Usuario cliente;
 	
 	@ManyToOne
 	@JoinColumn(name="aposta_id")
+	@NotNull
 	private Aposta aposta;
 }

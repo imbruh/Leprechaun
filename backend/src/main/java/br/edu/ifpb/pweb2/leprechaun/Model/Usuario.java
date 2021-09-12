@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -23,11 +24,22 @@ public class Usuario {
     private Long id;
     
     @Column(nullable = false)
+    @NotBlank
     private String nome;
+    
+    @NotNull(message = "cpf nao pode ser null")
     private String cpf;
+    
+    @NotNull
     private LocalDate data_nascimento;
+    
+    @NotNull
     private String login;
+    
+    @NotNull
     private String senha;
+    
+    @NotNull
     private TipoUsuario tipoUsuario;
 
     public Usuario(){};

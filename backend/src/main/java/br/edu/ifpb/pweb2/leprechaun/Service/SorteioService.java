@@ -2,6 +2,8 @@ package br.edu.ifpb.pweb2.leprechaun.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.ifpb.pweb2.leprechaun.Dto.SorteioSentDTO;
+import br.edu.ifpb.pweb2.leprechaun.Model.Aposta;
 import br.edu.ifpb.pweb2.leprechaun.Model.Sorteio;
 import br.edu.ifpb.pweb2.leprechaun.Model.TipoSorteio;
 import br.edu.ifpb.pweb2.leprechaun.Model.TipoUsuario;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
+import br.edu.ifpb.pweb2.leprechaun.Repository.ApostaRepository;
 import br.edu.ifpb.pweb2.leprechaun.Repository.SorteioRepository;
 import br.edu.ifpb.pweb2.leprechaun.Repository.UsuarioRepository;
 
@@ -25,6 +29,9 @@ public class SorteioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private ApostaRepository apostaRepository;
 	
 	public void criarSorteio(Long idControlador, LocalDateTime dataHora, double valor) {
 	
@@ -90,10 +97,21 @@ public class SorteioService {
 		
 		sorteioRepository.save(ultimoSorteio);
 		
+		List<Aposta> apostas = this.apostaRepository.findBySorteio(ultimoSorteio);
+		
+		List<Usuario> vencedores = this.listarVencendor(apostas, dezenasEscolhidas);
+		
 		SorteioSentDTO dto = new SorteioSentDTO();
 		dto.setDezenasSorteadas(ultimoSorteio.getDezenasSorteadas());
 		dto.setDataHora(ultimoSorteio.getDataHora());
 		dto.setValorPremio(ultimoSorteio.getValorPremio());
+		List<String> ganhadores = new ArrayList<>();
+		if(!vencedores.isEmpty()) {
+			for(Usuario vencedor: vencedores) {
+				ganhadores.add(vencedor.getNome());
+			}
+		}
+		dto.setGanhador(ganhadores);
 	
 		return dto;
 	}
@@ -119,6 +137,26 @@ public class SorteioService {
 			}                            
 		}
 		return dezenas;
+	}
+	
+	public List<Usuario> listarVencendor(List<Aposta> apostas, String[] dezenasEscolhidas) {
+		List<Usuario> usuarios = new ArrayList<>();
+		
+		for(Aposta aposta: apostas) {
+			int cont = 0;
+			for(String numero: aposta.getNumEscolhidos()) {
+				for(String numSorteio: dezenasEscolhidas) {
+					if(numero.equals(numSorteio)) {
+						cont ++;
+					}
+				}
+			}
+			if(cont == 6) {
+				usuarios.add(aposta.getCliente());
+			}
+		}
+		
+		return usuarios;
 	}
 	
 }

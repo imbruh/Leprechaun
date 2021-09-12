@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
 import br.edu.ifpb.pweb2.leprechaun.Repository.UsuarioRepository;
-import br.edu.ifpb.pweb2.leprechaun.Service.ClienteService;
+import br.edu.ifpb.pweb2.leprechaun.Service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -22,21 +22,21 @@ public class UsuarioController {
    private UsuarioRepository usuarioRepository;
 
    @Autowired
-   private ClienteService clienteService;
+   private UsuarioService usuarioService;
     
     @GetMapping("/")
-    public List<Usuario> getNome() {
+    public List<Usuario> getUsuarios() {
         return this.usuarioRepository.findAll();
     }
 
     @GetMapping("/clientes")
     public List<Usuario> getClientes() {
-        return this.clienteService.getClientes();
+        return this.usuarioService.getClientes();
     }
 
-    @PostMapping("/cliente/cadastrar")
-    public ResponseEntity<?> cadastrarCliente(@RequestBody Usuario cliente){
-        this.clienteService.cadastrarCliente(cliente.getNome(),cliente.getCpf(),cliente.getData_nascimento(),cliente.getLogin(),cliente.getSenha());
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping("/usuario/cadastrar")
+    public ResponseEntity<Usuario> cadastrarCliente(@RequestBody Usuario usuario){
+        Usuario user = this.usuarioService.cadastrarUsuario(usuario);
+        return new ResponseEntity<> (user, HttpStatus.OK);
     }
 }

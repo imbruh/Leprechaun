@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,11 +27,17 @@ public class Sorteio {
 	private String[] dezenasSorteadas;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) 
+    @NotNull
 	private LocalDateTime dataHora;
+    
+    @NotNull
 	private double valorPremio;
+    
+    @NotNull
 	private TipoSorteio tipo;
 	
 	@ManyToOne
 	@JoinColumn(name="controlador_id")
+	@NotNull
 	private Usuario controlador;
 }
