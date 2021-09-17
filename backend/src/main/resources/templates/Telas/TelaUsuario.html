@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/estilo.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/main.css}" />
+
+<title>Tela Inicial</title>
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <div class="container-fluid">
+	     <a class="navbar-brand" href="#">
+		      <img th:src="@{/images/leprechaun.png}" alt="" width="50" height="40" class="d-inline-block align-text-center">
+		      Leprechaun
+	     </a>
+	    <div class="collapse navbar-collapse" id="navbarText">
+	      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	        <li class="nav-item">
+	          <a class="nav-link active" aria-current="page" href="#">Conferir apostas</a>
+	      </ul>
+	      <span class="navbar-text me-4">
+	        Bruna Luiza
+	      </span>
+	     <button type="button" class="btn btn-warning">Sair</button>
+	    </div>
+	  </div>
+	</nav>
+
+	<div class="container">
+		<div class="card center" style="width: 18rem;">
+		  
+		  <img th:src="@{/images/trevo.png}" class="card-img-top" alt="...">
+		  <div class="card-body" th:if="${sorteio != null}">
+		    <h4 class="card-text text-center" th:text = "'Sorteio em aberto'" />
+		    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
+		    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
+		  </div>
+		  
+		  <div class="card-body" th:unless="${sorteio != null}">
+		    <h4 class="card-text text-center">Não há sorteio em aberto no momento</h4>
+		  </div>
+		  
+		</div>
+
+	</div>
+	
+	<div class="btn-aposta">
+		<button type="button" class="btn btn-dark mt-2">Apostar</button>
+	</div>
+	
+	
+	<script th:src="@{js/bootstrap.bundle.min.js}"></script>
+</body>

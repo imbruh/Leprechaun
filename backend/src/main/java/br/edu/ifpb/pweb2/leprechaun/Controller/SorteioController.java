@@ -1,8 +1,10 @@
 package br.edu.ifpb.pweb2.leprechaun.Controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifpb.pweb2.leprechaun.Dto.SorteioDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.SorteioSentDTO;
@@ -33,6 +36,15 @@ public class SorteioController {
     @GetMapping("/")
     public List<Sorteio> listarSorteios() {
         return this.sorteioRepository.findAll();
+    }
+    
+    @GetMapping("/telaInicial")
+    public ModelAndView testando(ModelAndView mav) {
+    	Sorteio sorteio = this.sorteioService.getSorteioAberto();
+    	mav.setViewName("Telas/TelaUsuario");
+    	mav.addObject("sorteio", sorteio);
+    	mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
+    	return mav;
     }
 
     @PostMapping("/criar")

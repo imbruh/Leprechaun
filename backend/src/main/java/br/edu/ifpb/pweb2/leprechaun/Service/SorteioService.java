@@ -33,6 +33,17 @@ public class SorteioService {
 	@Autowired
 	private ApostaRepository apostaRepository;
 	
+	public Sorteio getSorteioAberto() {
+		Sorteio sorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
+		
+		if(sorteio.getDezenasSorteadas() == null) {
+			return sorteio;
+		}
+		
+		return null;
+	}
+	
+	
 	public void criarSorteio(Long idControlador, LocalDateTime dataHora, double valor) {
 	
 		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
@@ -44,7 +55,7 @@ public class SorteioService {
 	        
 	        System.out.println(diaDisponivelConvert);
 	        
-	        LocalDateTime dataHoje = LocalDateTime.parse("2021-09-20T16:00"); //bruna é chata .now()
+	        LocalDateTime dataHoje = LocalDateTime.parse("2021-09-20T16:00"); 
 	        
 	        if(dataHoje.isBefore(diaDisponivelConvert)) {
 	        	throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Já tem um sorteio em aberto");

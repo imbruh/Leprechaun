@@ -44,10 +44,5 @@ public class UsuarioController {
         return new ResponseEntity<> (user, HttpStatus.OK);
     }
     
-    @GetMapping("/index")
-    public ModelAndView testando(ModelAndView mav) {
-    	mav.setViewName("index");
-    	mav.addObject("idade", 20);
-    	return mav;
-    }
+    
 }

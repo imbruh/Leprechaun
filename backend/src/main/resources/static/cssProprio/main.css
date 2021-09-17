@@ -1,0 +1,18 @@
+body {
+	background-color: #7EA780;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.card {
+	border: 2px solid black;
+}
+
+.btn-aposta {
+	display: flex;
+	justify-content: center;
+}
