@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.edu.ifpb.pweb2.leprechaun.Dto.UsuarioLoginDTO;
 import br.edu.ifpb.pweb2.leprechaun.Model.TipoUsuario;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
 import br.edu.ifpb.pweb2.leprechaun.Repository.UsuarioRepository;
@@ -30,5 +31,11 @@ public class UsuarioService {
     	}
     	
        return usuarioRepository.save(usuario);     
+    }
+    
+    public Usuario logarUsuario(Usuario usuario){
+    	Usuario usuarioExistente = this.usuarioRepository.findByLoginAndSenha(usuario.getLogin(), usuario.getSenha());
+    	
+    	return usuarioExistente;
     }
 }

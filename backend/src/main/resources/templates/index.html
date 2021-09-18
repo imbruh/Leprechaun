@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/estilo.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/main.css}" />
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+<title>Login</title>
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <div class="container-fluid">
+	     <a class="navbar-brand" href="#">
+		      <img th:src="@{/images/leprechaun.png}" alt="" width="50" height="40" style="object-fit: cover;" class="d-inline-block align-text-center">
+		      Leprechaun
+	     </a>
+	  </div>
+	</nav>
+
+	<div class="container">
+		<div class="card center" style="width: 21rem;">
+		  <h4 style="margin-top: 10px">LOGIN</h4>
+		  
+		  <form class="mb-2" action="#" th:action="@{/usuario/login}" th:object="${usuario}" method="post">
+			  <h6>Usuario</h6>
+			  
+			  <div class="col-md-6 mb-3" style="margin-left: 25%;">
+			    <input type="text" class="form-control-sm" :field="*{login}" id="inputLogin" placeholder="Digite seu login">
+			  </div>
+			  
+			  <h6>Senha</h6>
+			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
+			    <input type="password" class="form-control-sm" :field="*{senha}" id="inputPassword" placeholder="Digite sua senha">
+			  </div>
+			  
+			  <div>
+			  	 <button type="submit" value="submit" class="btn btn-warning btn-sm mb-2" style="width: 20%">Entrar</button>
+			  </div>
+			 
+			  <h7>Não possui uma conta? <a style="text-decoration: none; color: rgb(234, 218, 28)" href="#">Cadastre-se</a></h7>
+			</div>
+		</form>	
+	  
+	</div>
+	
+	
+	<script th:src="@{js/bootstrap.bundle.min.js}"></script>
+</body>

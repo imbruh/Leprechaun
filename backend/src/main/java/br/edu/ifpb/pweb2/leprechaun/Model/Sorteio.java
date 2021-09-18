@@ -33,7 +33,6 @@ public class Sorteio {
     @NotNull
 	private double valorPremio;
     
-    @NotNull
 	private TipoSorteio tipo;
 	
 	@ManyToOne

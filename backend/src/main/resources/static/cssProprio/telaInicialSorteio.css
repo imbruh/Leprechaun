@@ -1,0 +1,20 @@
+body {
+	background-color: #7EA780;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 16px;
+}
+
+.card {
+	box-shadow: 6px 8px 15px black;
+}
+
+.btn-aposta {
+	display: flex;
+	justify-content: center;
+	margin-top: 8px;
+}
+

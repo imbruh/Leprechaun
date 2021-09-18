@@ -37,15 +37,6 @@ public class SorteioController {
     public List<Sorteio> listarSorteios() {
         return this.sorteioRepository.findAll();
     }
-    
-    @GetMapping("/telaInicial")
-    public ModelAndView testando(ModelAndView mav) {
-    	Sorteio sorteio = this.sorteioService.getSorteioAberto();
-    	mav.setViewName("Telas/TelaUsuario");
-    	mav.addObject("sorteio", sorteio);
-    	mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
-    	return mav;
-    }
 
     @PostMapping("/criar")
     public ResponseEntity<?> criarSorteio(@RequestBody SorteioDTO sorteio) {
@@ -54,8 +45,8 @@ public class SorteioController {
     }
     
     @PutMapping("/realizar-sorteio")
-    public ResponseEntity<SorteioSentDTO> realizarSorteio(@RequestParam(defaultValue = "", required = false) String[] dezenasEscolhidas, @RequestParam TipoSorteio tipoSorteio){
-    	SorteioSentDTO dto = sorteioService.realizarSorteio(dezenasEscolhidas,tipoSorteio); 
+    public ResponseEntity<SorteioSentDTO> realizarSorteio(@RequestParam(defaultValue = "", required = false) String[] dezenasEscolhidas, @RequestParam TipoSorteio tipoSorteio, @RequestParam Long idControlador){
+    	SorteioSentDTO dto = sorteioService.realizarSorteio(dezenasEscolhidas,tipoSorteio,idControlador); 
     	return new ResponseEntity<SorteioSentDTO>(dto,HttpStatus.OK);
     }
 }

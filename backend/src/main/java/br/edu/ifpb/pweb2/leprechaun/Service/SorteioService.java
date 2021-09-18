@@ -52,14 +52,13 @@ public class SorteioService {
 			String diaDisponivel = sorteioRepository.ultimaData(ultimoSorteio.getDataHora()).replace(" ","T");
 
 	        LocalDateTime diaDisponivelConvert = LocalDateTime.parse(diaDisponivel);
-	        
-	        System.out.println(diaDisponivelConvert);
-	        
-	        LocalDateTime dataHoje = LocalDateTime.parse("2021-09-20T16:00"); 
-	        
-	        if(dataHoje.isBefore(diaDisponivelConvert)) {
+	             
+	        LocalDateTime dataHoje = LocalDateTime.now(); 
+	            
+	        if(dataHoje.isBefore(ultimoSorteio.getDataHora()) || ultimoSorteio.getDezenasSorteadas() == null ) {
 	        	throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Já tem um sorteio em aberto");
 		    }
+	        
 	        if(dataHora.isBefore(diaDisponivelConvert) || ultimoSorteio.getDezenasSorteadas()==null) {	        	
 	        	throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Só pode criar sorteio a partir do dia "+ diaDisponivelConvert.format(DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm:ss")));
 	        }
@@ -78,9 +77,15 @@ public class SorteioService {
         sorteioRepository.save(sorteio);
 	}
 	
-	public SorteioSentDTO realizarSorteio(String[] dezenasEscolhidas, TipoSorteio tipoSorteio) {
+	public SorteioSentDTO realizarSorteio(String[] dezenasEscolhidas, TipoSorteio tipoSorteio, Long idControlador) {
+			
 		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
-		LocalDateTime hoje = LocalDateTime.parse("2021-09-19T01:00:00"); //LocalDateTime.now();
+		
+		if(ultimoSorteio.getControlador().getId() != idControlador) {
+			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Você não é o controlador desse sorteio");
+		}
+		
+		LocalDateTime hoje = LocalDateTime.parse("2021-09-23T01:00:00"); //LocalDateTime.now();
 		if(hoje.toLocalDate().isBefore(ultimoSorteio.getDataHora().toLocalDate())) {
 			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "O sorteio só poderá ser realizado no dia: " + ultimoSorteio.getDataHora().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		}
@@ -94,6 +99,7 @@ public class SorteioService {
 			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Apenas 6 números devem ser escolhidos para o resultado do sorteio");
 
 		}
+		
 		
 		for (int x = 0; x<6; x++) {
 			if(Integer.parseInt(dezenasEscolhidas[x]) < 10 && dezenasEscolhidas[x].length()==1) {
