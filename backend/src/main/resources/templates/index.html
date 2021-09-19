@@ -29,16 +29,16 @@
 		<div class="card center" style="width: 21rem;">
 		  <h4 style="margin-top: 10px">LOGIN</h4>
 		  
-		  <form class="mb-2" action="#" th:action="@{/usuario/login}" th:object="${usuario}" method="post">
+		  <form class="mb-2" action="http://localhost:8080/usuario/login" th:object="${usuario}" method="POST">
 			  <h6>Usuario</h6>
 			  
 			  <div class="col-md-6 mb-3" style="margin-left: 25%;">
-			    <input type="text" class="form-control-sm" :field="*{login}" id="inputLogin" placeholder="Digite seu login">
+			    <input type="text" class="form-control-sm" th:field="*{login}" id="inputLogin" placeholder="Digite seu login">
 			  </div>
 			  
 			  <h6>Senha</h6>
 			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
-			    <input type="password" class="form-control-sm" :field="*{senha}" id="inputPassword" placeholder="Digite sua senha">
+			    <input type="password" class="form-control-sm" th:field="*{senha}" id="inputPassword" placeholder="Digite sua senha">
 			  </div>
 			  
 			  <div>
