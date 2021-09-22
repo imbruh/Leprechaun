@@ -26,10 +26,15 @@
 	</nav>
 
 	<div class="container">
+		
 		<div class="card center" style="width: 21rem;">
+			<div class="alert alert-danger" role="alert" th:if="${mensagem != null}">
+			  <p th:text=${mensagem}/>
+			</div>
+		
 		  <h4 style="margin-top: 10px">LOGIN</h4>
 		  
-		  <form class="mb-2" action="http://localhost:8080/usuario/login" th:object="${usuario}" method="POST">
+		  <form class="mb-2" action="/login/usuario" th:object="${usuario}" method="POST">
 			  <h6>Usuario</h6>
 			  
 			  <div class="col-md-6 mb-3" style="margin-left: 25%;">

@@ -29,7 +29,6 @@ import br.edu.ifpb.pweb2.leprechaun.Service.SorteioService;
 import br.edu.ifpb.pweb2.leprechaun.Service.UsuarioService;
 
 @Controller
-@RequestMapping("/usuario")
 public class UsuarioController {
     
    @Autowired
@@ -57,37 +56,40 @@ public class UsuarioController {
         return new ResponseEntity<> (user, HttpStatus.OK);
     }
     
-    @RequestMapping("/index")
-    public String index(Model model) {
+    @RequestMapping("/login")
+    public String index(Model model, @ModelAttribute("mensagem") String mensagem) {
     	model.addAttribute("usuario", new Usuario());
-    	return "index";
+    	
+    	if(mensagem.isEmpty()) {
+    		mensagem = null;
+    	}
+    	 	
+    	model.addAttribute("mensagem", mensagem);
+    	
+    	return "login";
     }
   
-    @RequestMapping("/login")
-    public ModelAndView logarUsuario(ModelAndView mav, Usuario usuario) {
+    @RequestMapping("/login/usuario")
+    public String logarUsuario(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, RedirectAttributes redirectAttributes) {
     	Usuario usuarioExistente = this.usuarioService.logarUsuario(usuario);
   
     	if(usuarioExistente == null) {
-//    		redirectAttributes.addFlashAttribute("Erro", "Login ou senha inválidos");
-    		mav.addObject("mensagem", "Login ou senha invalidos");
-    		mav.setViewName("index");
-    		return mav;
+    		redirectAttributes.addFlashAttribute("mensagem", "Login ou senha inválidos");
+//    		mav.addObject("mensagem", "Login ou senha invalidos");
+    		mav.setViewName("login");
+    		return "redirect:/login";
     	}
     	
-    	mav.addObject("usuario", usuarioExistente);
-    	mav.setViewName("redirect:/usuario/sorteio/" + usuarioExistente.getId());
-    	
-//    	redirectAttributes.addFlashAttribute("usuario", usuario);
-        return mav;
+    	redirectAttributes.addFlashAttribute("usuario", usuarioExistente);
+        return "redirect:/sorteio";
     }
     
     
-    @RequestMapping("/sorteio/{idUsuario}")
-    public ModelAndView getTelaSorteio(ModelAndView mav, @PathVariable Long idUsuario) {
-    	Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
-    	
+    @RequestMapping("/sorteio")
+    public ModelAndView getTelaSorteio(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario) {
+
     	mav.addObject("usuario", usuario);
-    	mav.setViewName("Telas/TelaInicialSorteio");
+    	mav.setViewName("Telas/TelaSorteioCliente");
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
     	mav.addObject("sorteio", sorteio);
     	if(sorteio != null) {
@@ -95,5 +97,14 @@ public class UsuarioController {
     	}
     	
     	return mav;
+    }
+    
+    @RequestMapping("/sorteio/aposta/{idUsuario}")
+    public String redirectAposta(Model model, @PathVariable Long idUsuario, RedirectAttributes redirectAttributes) {
+  
+    	Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
+    	
+    	redirectAttributes.addFlashAttribute("usuario", usuario);
+    	return "redirect:/aposta";
     }
 }
