@@ -18,31 +18,48 @@
 
 	<div th:insert="menu :: menu"></div>
 	
-	<div class="container">
-		<div class="card center" style="width: 18rem;">
-		  
-		  <img th:src="@{/images/trevo.png}" class="card-img-top" alt="...">
-		  <div class="card-body" th:if="${sorteio != null}">
-		    <h4 class="card-text text-center" th:text = "'Sorteio em aberto'" />
-		    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
-		    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
-		  </div>
-		  
-		  <div class="card-body" th:unless="${sorteio != null}">
-		    <h4 class="card-text text-center">Não há sorteio em aberto no momento</h4>
-		  </div>
-		  
+	<div th:if="${sorteio != null}">
+		<div class="container">
+			<div class="card center" style="width: 18rem;">
+			  
+			  <img th:src="@{/images/trevo.png}" class="card-img-top" alt="...">
+			  
+			  <div class="card-body">
+				<h4 class="card-text text-center" th:text = "'Sorteio em aberto'" />
+			  	
+			  	<div th:if="${sorteio.getControlador.id == usuario.getId}">
+			  		<p class="card-text text-center" th:text = "'Quantidade de apostas: 0' " />
+				    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
+				    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
+			  	</div>
+			  	
+			  	<div th:unless="${sorteio.getControlador.id == usuario.getId}">
+				    <p class="card-text text-center" th:text="'Controlador do Sorteio: ' + ${sorteio.getControlador.getNome}"/>
+				    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
+				    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
+			  		<p style="font-weight:bold" class="card-text text-center" th:text = "'Você só poderá criar um novo sorteio a partir do dia ...'" />
+			  		
+			  	</div>
+			  </div>
+			  
+			  
+			  
+			</div>
 		</div>
-
 	</div>
 	
-	<div class="btn-aposta" th:if="${sorteio != null}">
-		<a th:href="@{/sorteio/aposta/{idUsuario} (idUsuario=${usuario.id})}"> <button type="button" class="btn btn-dark mt-2">Apostar</button> </a>
-	</div>
-	<div class="btn-aposta" th:unless="${sorteio != null}">
-		<button type="button" class="btn btn-dark mt-2" disabled>Apostar</button>
+	<div th:unless="${sorteio != null}">
+	
 	</div>
 	
+	<div th:if="${sorteio.getControlador.getId == usuario.getId }">
+		<div class="btn-aposta" th:if="${sorteio.getDataHora.toLocalDate==data}">
+			<a th:href="@{/sorteio/aposta/{idUsuario} (idUsuario=${usuario.id})}"> <button type="button" class="btn btn-dark mt-2">Finalizar Sorteio</button> </a>
+		</div>
+		<div class="btn-aposta" th:unless="${sorteio.getDataHora.toLocalDate==data}">
+			<button type="button" class="btn btn-dark mt-2" disabled>Finalizar Sorteio</button>
+		</div>
+	</div>
 	
 	<script th:src="@{js/bootstrap.bundle.min.js}"></script>
 </body>

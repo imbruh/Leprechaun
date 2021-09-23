@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.leprechaun.Controller;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -107,19 +108,39 @@ public class UsuarioController {
     		mav.setViewName("login");
     		return "redirect:/login";
     	}
-    	
     	redirectAttributes.addFlashAttribute("usuario", usuarioExistente);
-        return "redirect:/sorteio";
+    	if(usuarioExistente.getTipoUsuario().toString().equals("CLIENTE")) {
+    		return "redirect:/sorteio/cliente";    		
+    	}
+    	return "redirect:/sorteio/controlador";
+    	
     }
     
     
-    @RequestMapping("/sorteio")
-    public ModelAndView getTelaSorteio(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario) {
+    @RequestMapping("/sorteio/cliente")
+    public ModelAndView getTelaSorteioCliente(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario) {
 
     	mav.addObject("usuario", usuario);
     	mav.setViewName("Telas/TelaSorteioCliente");
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
     	mav.addObject("sorteio", sorteio);
+    	if(sorteio != null) {
+    		mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
+    	}
+    	
+    	return mav;
+    }
+    
+    @RequestMapping("/sorteio/controlador")
+    public ModelAndView getTelaSorteioControlador(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario) {
+    	
+    	//CALCULAR QUANTIDADE DE APOSTAS DO SORTEIO
+    	
+    	mav.addObject("usuario", usuario);
+    	mav.setViewName("Telas/TelaSorteioControlador");
+    	Sorteio sorteio = this.sorteioService.getSorteioAberto();
+    	mav.addObject("sorteio", sorteio);
+    	mav.addObject("data", LocalDate.now());
     	if(sorteio != null) {
     		mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
     	}
