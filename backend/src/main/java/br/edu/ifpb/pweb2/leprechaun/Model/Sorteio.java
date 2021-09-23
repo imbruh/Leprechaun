@@ -26,7 +26,7 @@ public class Sorteio {
 	
 	private String[] dezenasSorteadas;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
 	private LocalDateTime dataHora;
     

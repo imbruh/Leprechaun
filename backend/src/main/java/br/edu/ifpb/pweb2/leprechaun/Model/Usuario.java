@@ -8,8 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 import lombok.Data;
 
@@ -31,6 +37,7 @@ public class Usuario {
     private String cpf;
     
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate data_nascimento;
     
     @NotNull

@@ -57,7 +57,7 @@ public class UsuarioController {
     }
     
     @RequestMapping("/login")
-    public String index(Model model, @ModelAttribute("mensagem") String mensagem) {
+    public String login(Model model, @ModelAttribute("mensagem") String mensagem) {
     	model.addAttribute("usuario", new Usuario());
     	
     	if(mensagem.isEmpty()) {
@@ -67,6 +67,34 @@ public class UsuarioController {
     	model.addAttribute("mensagem", mensagem);
     	
     	return "login";
+    }
+    
+    @RequestMapping("/cadastro")
+    public String cadastro(Model model, @ModelAttribute("mensagem") String mensagem) {
+    	model.addAttribute("usuario", new Usuario());
+    	
+    	if(mensagem.isEmpty()) {
+    		mensagem = null;
+    	}
+    	 	
+    	model.addAttribute("mensagem", mensagem);
+    	
+    	return "Cadastro";
+    }
+    
+    @RequestMapping("/cadastro/usuario")
+    public String cadastrarUsuario(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, RedirectAttributes redirectAttributes) {
+    	this.usuarioService.cadastrarUsuario(usuario);
+  
+    	
+//    		redirectAttributes.addFlashAttribute("mensagem", "Login ou senha inválidos");
+//    		mav.addObject("mensagem", "Login ou senha invalidos");
+//    		mav.setViewName("login");
+//    		return "redirect:/login";
+    	
+    	
+    	redirectAttributes.addFlashAttribute("usuario", usuario);
+        return "redirect:/sorteio";
     }
   
     @RequestMapping("/login/usuario")

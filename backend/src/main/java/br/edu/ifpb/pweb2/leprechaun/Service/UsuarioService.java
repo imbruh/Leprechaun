@@ -30,6 +30,12 @@ public class UsuarioService {
     		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Você precisa ter 18 anos ou mais para se cadastrar.");	
     	}
     	
+    	Usuario usuarioExistente = this.usuarioRepository.findByCpfOrLogin(usuario.getCpf(), usuario.getLogin());
+    	
+    	if(usuarioExistente != null) {
+    		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Usuario ja existe");	
+    	}
+    	
        return usuarioRepository.save(usuario);     
     }
     

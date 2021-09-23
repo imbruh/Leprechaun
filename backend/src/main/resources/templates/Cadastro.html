@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/estilo.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/main.css}" />
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+<title>Cadastro de Usuario</title>
+
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <div class="container-fluid">
+	     <a class="navbar-brand" href="#">
+		      <img th:src="@{/images/leprechaun.png}" alt="" width="50" height="40" style="object-fit: cover;" class="d-inline-block align-text-center">
+		      Leprechaun
+	     </a>
+	  </div>
+	</nav>
+
+	<div class="container">
+		
+		<div class="card center" style="width: 21rem;">
+			<div class="alert alert-danger" role="alert" th:if="${mensagem != null}">
+			  <p th:text=${mensagem}/>
+			</div>
+		
+		  <h4 style="margin-top: 10px">CADASTRO</h4>
+		  
+		  <form class="mb-2" action="/cadastro/usuario" th:object="${usuario}" method="POST">
+			  
+			  <h7>Tipo de Usuario</h7>
+			 <div style="display: flex; justify-content: center"> 
+			 	<div class="form-check">
+				  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="CLIENTE" th:field="*{tipoUsuario}">
+				  <label class="form-check-label" for="flexRadioDefault1">
+				    Cliente
+				  </label>
+			  </div>
+			  <div class="form-check ms-3">
+				  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="CONTROLADOR" th:field="*{tipoUsuario}">
+				  <label class="form-check-label" for="flexRadioDefault1">
+				    Controlador
+				  </label>
+			  </div>
+			 </div>
+			  
+			  
+			  <h7>Nome</h7>
+			  <div class="col-md-6 mb-3" style="margin-left: 25%;">
+			    <input type="text" class="form-control-sm" th:field="*{nome}" id="inputLogin" required>
+			  </div>
+			  
+			  <h7>CPF</h7>
+			  <div class="col-md-6 mb-3" style="margin-left: 25%;">
+			    <input type="text" class="form-control-sm cpf-mask" th:field="*{cpf}" id="inputLogin" required>
+			  </div>
+			  
+			  <h7>Data de Nascimento</h7>
+			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
+			    <input type="date" class="form-control-sm" th:field="*{data_nascimento}" id="inputPassword" required>
+			  </div>
+			  
+			  <h7>Login</h7>
+			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
+			    <input type="text" class="form-control-sm" th:field="*{login}" id="inputPassword" required>
+			  </div>
+			  
+			   <h7>Senha</h7>
+			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
+			    <input type="password" class="form-control-sm" th:field="*{senha}" id="inputPassword" required>
+			  </div>
+			  
+			  <div>
+			  	 <button type="submit" value="submit" class="btn btn-warning btn-sm" style="width: 20%">Cadastrar</button>
+			  </div>
+			 
+			</div>
+		</form>	
+	  
+	</div>
+	
+	
+	<script th:src="@{js/bootstrap.bundle.min.js}"></script>
+	
+	<script async="" src="//www.google-analytics.com/analytics.js"></script><script type="text/javascript" src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="//assets.locaweb.com.br/locastyle/2.0.6/javascripts/locastyle.js"></script>
+	<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+</body>
