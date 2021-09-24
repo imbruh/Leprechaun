@@ -1,16 +1,16 @@
 package br.edu.ifpb.pweb2.leprechaun.Model;
 
 public enum TipoUsuario {
-    CLIENTE("cliente"),
-    CONTROLADOR("controlador");
+    CLIENTE(0),
+    CONTROLADOR(1);
 
-    private String tipo;
+    private int tipo;
 
-    TipoUsuario(String tipo) {
+    TipoUsuario(int tipo) {
         this.tipo = tipo;
     }
 
-    public String getTipo() {
+    public int getTipo() {
         return this.tipo;
     }
 }

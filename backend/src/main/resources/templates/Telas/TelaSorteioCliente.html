@@ -37,7 +37,7 @@
 	</div>
 	
 	<div class="btn-aposta" th:if="${sorteio != null}">
-		<a th:href="@{/sorteio/aposta/{idUsuario} (idUsuario=${usuario.id})}"> <button type="button" class="btn btn-dark mt-2">Apostar</button> </a>
+		<a th:href="@{/aposta}"> <button type="button" class="btn btn-dark mt-2">Apostar</button> </a>
 	</div>
 	<div class="btn-aposta" th:unless="${sorteio != null}">
 		<button type="button" class="btn btn-dark mt-2" disabled>Apostar</button>

@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,23 +101,29 @@ public class UsuarioController {
     }
   
     @RequestMapping("/login/usuario")
-    public String logarUsuario(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, RedirectAttributes redirectAttributes) {
+    public String logarUsuario(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, RedirectAttributes redirectAttributes, HttpSession session) {
     	Usuario usuarioExistente = this.usuarioService.logarUsuario(usuario);
   
     	if(usuarioExistente == null) {
     		redirectAttributes.addFlashAttribute("mensagem", "Login ou senha inválidos");
-//    		mav.addObject("mensagem", "Login ou senha invalidos");
     		mav.setViewName("login");
     		return "redirect:/login";
     	}
+    	session.setAttribute("usuario", usuarioExistente);
     	redirectAttributes.addFlashAttribute("usuario", usuarioExistente);
     	if(usuarioExistente.getTipoUsuario().toString().equals("CLIENTE")) {
     		return "redirect:/sorteio/cliente";    		
     	}
+    	
     	return "redirect:/sorteio/controlador";
     	
     }
     
+    @RequestMapping("/sair")
+    public String sair(HttpSession session) {
+    	session.invalidate();
+    	return "redirect:/login";
+    }
     
     @RequestMapping("/sorteio/cliente")
     public ModelAndView getTelaSorteioCliente(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario) {
@@ -141,6 +149,7 @@ public class UsuarioController {
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
     	mav.addObject("sorteio", sorteio);
     	mav.addObject("data", LocalDate.now());
+    	mav.addObject("novoSorteio", new Sorteio());
     	if(sorteio != null) {
     		mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
     	}
@@ -148,12 +157,4 @@ public class UsuarioController {
     	return mav;
     }
     
-    @RequestMapping("/sorteio/aposta/{idUsuario}")
-    public String redirectAposta(Model model, @PathVariable Long idUsuario, RedirectAttributes redirectAttributes) {
-  
-    	Usuario usuario = this.usuarioRepository.findById(idUsuario).orElse(null);
-    	
-    	redirectAttributes.addFlashAttribute("usuario", usuario);
-    	return "redirect:/aposta";
-    }
 }

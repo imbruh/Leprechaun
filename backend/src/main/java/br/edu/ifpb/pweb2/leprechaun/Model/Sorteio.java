@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.leprechaun.Model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -28,7 +29,7 @@ public class Sorteio {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
-	private LocalDateTime dataHora;
+	private LocalDate dataHora;
     
     @NotNull
 	private double valorPremio;

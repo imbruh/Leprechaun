@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -44,24 +45,25 @@ public class SorteioService {
 	}
 	
 	
-	public void criarSorteio(Long idControlador, LocalDateTime dataHora, double valor) {
+	public String criarSorteio(Long idControlador, LocalDate dataHora, double valor) {
 	
 		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
 		
 		if(ultimoSorteio != null) {
 			String diaDisponivel = sorteioRepository.ultimaData(ultimoSorteio.getDataHora()).replace(" ","T");
 
-	        LocalDateTime diaDisponivelConvert = LocalDateTime.parse(diaDisponivel);
+	        LocalDate diaDisponivelConvert = LocalDate.parse(diaDisponivel);
 	             
-	        LocalDateTime dataHoje = LocalDateTime.now(); 
+	        LocalDate dataHoje = LocalDate.now(); 
 	            
 	        if(dataHoje.isBefore(ultimoSorteio.getDataHora()) || ultimoSorteio.getDezenasSorteadas() == null ) {
-	        	throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Já tem um sorteio em aberto");
+	        	return "Já tem um sorteio em aberto";
 		    }
 	        
 	        if(dataHora.isBefore(diaDisponivelConvert) || ultimoSorteio.getDezenasSorteadas()==null) {	        	
-	        	throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Só pode criar sorteio a partir do dia "+ diaDisponivelConvert.format(DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm:ss")));
+	        	return "Só pode criar sorteio a partir do dia "+ diaDisponivelConvert.format(DateTimeFormatter.ofPattern("dd/MM/yyy"));
 	        }
+	        
 		}
 		        
         Usuario controlador = usuarioRepository.findByIdAndTipoUsuario(idControlador, TipoUsuario.CONTROLADOR);
@@ -75,6 +77,8 @@ public class SorteioService {
 		sorteio.setValorPremio(valor);	
 		sorteio.setControlador(controlador);	
         sorteioRepository.save(sorteio);
+        
+        return null;
 	}
 	
 	public SorteioSentDTO realizarSorteio(String[] dezenasEscolhidas, TipoSorteio tipoSorteio, Long idControlador) {
@@ -85,9 +89,9 @@ public class SorteioService {
 			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Você não é o controlador desse sorteio");
 		}
 		
-		LocalDateTime hoje = LocalDateTime.parse("2021-09-23T01:00:00"); //LocalDateTime.now();
-		if(hoje.toLocalDate().isBefore(ultimoSorteio.getDataHora().toLocalDate())) {
-			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "O sorteio só poderá ser realizado no dia: " + ultimoSorteio.getDataHora().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		LocalDate hoje = LocalDate.parse("2021-09-23"); //LocalDateTime.now();
+		if(hoje.isBefore(ultimoSorteio.getDataHora())) {
+			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "O sorteio só poderá ser realizado no dia: " + ultimoSorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		}
 		if (ultimoSorteio.getDezenasSorteadas()!=null) {
 			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Sorteio já realizado");			

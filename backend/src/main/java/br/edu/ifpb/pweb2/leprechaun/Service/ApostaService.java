@@ -1,5 +1,6 @@
 package br.edu.ifpb.pweb2.leprechaun.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ApostaService {
 
     	Sorteio sorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
     	
-    	if (sorteio.getDataHora().isBefore(LocalDateTime.now()) || sorteio.getDezenasSorteadas()!=null){
+    	if (sorteio.getDataHora().isBefore(LocalDate.now()) || sorteio.getDezenasSorteadas()!=null){
     		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Não ha sorteio em aberto no momento");
     	}
     	
