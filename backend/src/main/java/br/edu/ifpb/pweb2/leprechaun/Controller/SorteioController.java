@@ -1,6 +1,8 @@
 package br.edu.ifpb.pweb2.leprechaun.Controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -55,9 +57,32 @@ public class SorteioController {
         return "redirect:/sorteio/controlador";
     }
     
-    @PutMapping("/realizar-sorteio")
-    public ResponseEntity<SorteioSentDTO> realizarSorteio(@RequestParam(defaultValue = "", required = false) String[] dezenasEscolhidas, @RequestParam TipoSorteio tipoSorteio, @RequestParam Long idControlador){
-    	SorteioSentDTO dto = sorteioService.realizarSorteio(dezenasEscolhidas,tipoSorteio,idControlador); 
-    	return new ResponseEntity<SorteioSentDTO>(dto,HttpStatus.OK);
+    @RequestMapping("/realizar-sorteio/{idControlador}")
+    public String realizarSorteio(ModelAndView mav, @ModelAttribute("sorteio") Sorteio sorteio, @PathVariable Long idControlador, HttpSession session, RedirectAttributes redirectAttributes){
+    	
+    	SorteioSentDTO sorteioDTO;
+    	
+    	if(sorteio.getTipo() == TipoSorteio.ALEATORIO) {
+    		
+    		sorteioDTO = sorteioService.realizarSorteio(null, sorteio.getTipo(), idControlador); 
+    	}
+    	else {
+    		sorteioDTO = sorteioService.realizarSorteio(sorteio.getDezenasSorteadas(), sorteio.getTipo(), idControlador);
+    	}
+    	
+    	String dezenas = Arrays.toString(sorteioDTO.getDezenasSorteadas());
+    	dezenas = dezenas.replace(", ", " - ").replace("[", "").replace("]", "");
+    	
+    	redirectAttributes.addFlashAttribute("dataFormatada", sorteioDTO.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
+    	redirectAttributes.addFlashAttribute("dezenas", dezenas);
+    	redirectAttributes.addFlashAttribute("sorteioDTO", sorteioDTO);
+    	
+    	return "redirect:/sorteio/realizado";
+    }
+    
+    @RequestMapping("/realizado") 
+    public ModelAndView sorteioRealizado(ModelAndView mav, HttpSession session, RedirectAttributes redirectAttributes, SorteioSentDTO dto) {
+    	mav.setViewName("Telas/TelaSorteioRealizado");
+    	return mav;
     }
 }

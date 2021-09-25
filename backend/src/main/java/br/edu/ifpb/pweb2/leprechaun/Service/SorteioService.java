@@ -83,57 +83,51 @@ public class SorteioService {
 	
 	public SorteioSentDTO realizarSorteio(String[] dezenasEscolhidas, TipoSorteio tipoSorteio, Long idControlador) {
 			
-		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
-		
-		if(ultimoSorteio.getControlador().getId() != idControlador) {
-			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Você não é o controlador desse sorteio");
-		}
-		
-		LocalDate hoje = LocalDate.parse("2021-09-23"); //LocalDateTime.now();
-		if(hoje.isBefore(ultimoSorteio.getDataHora())) {
-			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "O sorteio só poderá ser realizado no dia: " + ultimoSorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		}
-		if (ultimoSorteio.getDezenasSorteadas()!=null) {
-			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Sorteio já realizado");			
-		}
-		if (tipoSorteio == TipoSorteio.ALEATORIO) {
-			dezenasEscolhidas = this.gerarNumeros();
-		}
-		else if (dezenasEscolhidas.length!=6) {
-			throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Apenas 6 números devem ser escolhidos para o resultado do sorteio");
-
-		}
-		
-		
-		for (int x = 0; x<6; x++) {
-			if(Integer.parseInt(dezenasEscolhidas[x]) < 10 && dezenasEscolhidas[x].length()==1) {
-				String numero = "0"+dezenasEscolhidas[x];
-				dezenasEscolhidas[x]=numero;
-			}
-		}
-		
-		
-		ultimoSorteio.setDezenasSorteadas(dezenasEscolhidas);
-		ultimoSorteio.setTipo(tipoSorteio);
-		
-		sorteioRepository.save(ultimoSorteio);
-		
-		List<Aposta> apostas = this.apostaRepository.findBySorteio(ultimoSorteio);
-		
-		List<Usuario> vencedores = this.listarVencendor(apostas, dezenasEscolhidas);
-		
 		SorteioSentDTO dto = new SorteioSentDTO();
-		dto.setDezenasSorteadas(ultimoSorteio.getDezenasSorteadas());
-		dto.setDataHora(ultimoSorteio.getDataHora());
-		dto.setValorPremio(ultimoSorteio.getValorPremio());
-		List<String> ganhadores = new ArrayList<>();
-		if(!vencedores.isEmpty()) {
-			for(Usuario vencedor: vencedores) {
-				ganhadores.add(vencedor.getNome());
-			}
+		
+		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
+				
+		LocalDate hoje = LocalDate.now(); //substituir para LocalDateTime.now();
+		if(hoje.isBefore(ultimoSorteio.getDataHora())) {
+			dto.setMensagem("O sorteio só poderá ser realizado no dia: " + ultimoSorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		}
-		dto.setGanhador(ganhadores);
-	
+//		if (ultimoSorteio.getDezenasSorteadas()!=null) {
+//			dto.setMensagem("Sorteio já realizado");			
+//		}
+		else {
+			if (tipoSorteio == TipoSorteio.ALEATORIO) {
+				dezenasEscolhidas = this.gerarNumeros();
+			}
+				
+			for (int x = 0; x<6; x++) {
+				if(Integer.parseInt(dezenasEscolhidas[x]) < 10 && dezenasEscolhidas[x].length()==1) {
+					String numero = "0"+dezenasEscolhidas[x];
+					dezenasEscolhidas[x]=numero;
+				}
+			}
+				
+			ultimoSorteio.setDezenasSorteadas(dezenasEscolhidas);
+			ultimoSorteio.setTipo(tipoSorteio);
+			
+			sorteioRepository.save(ultimoSorteio);
+			
+			List<Aposta> apostas = this.apostaRepository.findBySorteio(ultimoSorteio);
+			
+			List<Usuario> vencedores = this.listarVencendor(apostas, dezenasEscolhidas);
+			
+			dto = new SorteioSentDTO();
+			dto.setDezenasSorteadas(ultimoSorteio.getDezenasSorteadas());
+			dto.setDataHora(ultimoSorteio.getDataHora());
+			dto.setValorPremio(ultimoSorteio.getValorPremio());
+			List<String> ganhadores = new ArrayList<>();
+			if(!vencedores.isEmpty()) {
+				for(Usuario vencedor: vencedores) {
+					ganhadores.add(vencedor.getNome());
+				}
+			}
+			dto.setGanhador(ganhadores);
+		}
+
 		return dto;
 	}
 	

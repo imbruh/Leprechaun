@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/estilo.css}" />
-<link rel="stylesheet" th:href="@{/cssProprio/main.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/telaCadastro.css}" />
  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
 
 <title>Cadastro de Usuario</title>
@@ -18,7 +18,7 @@
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	  <div class="container-fluid">
-	     <a class="navbar-brand" href="#">
+	     <a class="navbar-brand" th:href="@{/login}">
 		      <img th:src="@{/images/leprechaun.png}" alt="" width="50" height="40" style="object-fit: cover;" class="d-inline-block align-text-center">
 		      Leprechaun
 	     </a>
@@ -27,17 +27,56 @@
 
 	<div class="container">
 		
-		<div class="card center" style="width: 21rem;">
+		<div class="card center" style="width: 36rem;">
 			<div class="alert alert-danger" role="alert" th:if="${mensagem != null}">
 			  <p th:text=${mensagem}/>
 			</div>
 		
-		  <h4 style="margin-top: 10px">CADASTRO</h4>
+		  <h3 style="margin-top: 10px">CADASTRO</h3>
 		  
 		  <form class="mb-2" action="/cadastro/usuario" th:object="${usuario}" method="POST">
+			  		  
+			  <div class="campos">
+				
+				<div> 
+					  <h7>Nome:</h7>
+					  <div class="col-md-6 mb-3 me-8">
+					   	<input type="text" class="form-control-sm" th:field="*{nome}" id="inputNome" required>
+					  </div>
+				  </div>
 			  
-			  <h7>Tipo de Usuario</h7>
-			 <div style="display: flex; justify-content: center"> 
+			  	<div>
+				  <h7>CPF:</h7>
+				  <div class="col-md-6 mb-3">
+				    <input type="text" class="form-control-sm cpf-mask" th:field="*{cpf}" id="inputCpf" required>
+				  </div>
+				</div>
+				
+				<div>
+				  <h7>Data de Nascimento:</h7>
+				  <div class="col-md-6 center mb-3">
+				    <input type="date" class="form-control-sm" th:field="*{data_nascimento}" id="inputDate" required>
+				  </div>
+				 </div>
+				  
+				<div class="ms-5"> 
+				  <h7 style="margin-left: 20%">Login:</h7>
+				  <div class="col-md-6 center mb-3 ms-5">
+				    <input type="text" class="form-control-sm" th:field="*{login}" id="inputPassword" required>
+				  </div>
+				</div>
+			  
+			   <div class="me-5">
+				   <h7 style="margin-right: 20%">Senha:</h7>
+				  <div class="col-md-6 center mb-3 me-5">
+				    <input type="password" class="form-control-sm" th:field="*{senha}" id="inputPassword" required>
+			  	  </div>
+			  	</div>
+			  	
+			</div>
+			  
+			  <h6>Tipo de Usuario</h6>
+			 <div style="display: flex; justify-content: center" required> 
 			 	<div class="form-check">
 				  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="CLIENTE" th:field="*{tipoUsuario}">
 				  <label class="form-check-label" for="flexRadioDefault1">
@@ -51,35 +90,9 @@
 				  </label>
 			  </div>
 			 </div>
-			  
-			  
-			  <h7>Nome</h7>
-			  <div class="col-md-6 mb-3" style="margin-left: 25%;">
-			    <input type="text" class="form-control-sm" th:field="*{nome}" id="inputLogin" required>
-			  </div>
-			  
-			  <h7>CPF</h7>
-			  <div class="col-md-6 mb-3" style="margin-left: 25%;">
-			    <input type="text" class="form-control-sm cpf-mask" th:field="*{cpf}" id="inputLogin" required>
-			  </div>
-			  
-			  <h7>Data de Nascimento</h7>
-			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
-			    <input type="date" class="form-control-sm" th:field="*{data_nascimento}" id="inputPassword" required>
-			  </div>
-			  
-			  <h7>Login</h7>
-			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
-			    <input type="text" class="form-control-sm" th:field="*{login}" id="inputPassword" required>
-			  </div>
-			  
-			   <h7>Senha</h7>
-			  <div class="col-md-6 center mb-3" style="margin-left: 25%;">
-			    <input type="password" class="form-control-sm" th:field="*{senha}" id="inputPassword" required>
-			  </div>
-			  
+			 			  
 			  <div>
-			  	 <button type="submit" value="submit" class="btn btn-warning btn-sm" style="width: 20%">Cadastrar</button>
+			  	 <button type="submit" value="submit" class="btn btn-warning btn-sm">Cadastrar</button>
 			  </div>
 			 
 			</div>

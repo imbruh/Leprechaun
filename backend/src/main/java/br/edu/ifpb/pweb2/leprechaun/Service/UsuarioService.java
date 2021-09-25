@@ -23,20 +23,21 @@ public class UsuarioService {
         return usuarioRepository.findByTipoUsuario(TipoUsuario.CLIENTE);
     }
     
-    public Usuario cadastrarUsuario(Usuario usuario){
+    public String cadastrarUsuario(Usuario usuario){
     	int idade = LocalDate.now().getYear() - usuario.getData_nascimento().getYear();
     	
     	if(idade < 18) {
-    		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Você precisa ter 18 anos ou mais para se cadastrar.");	
+    		return "Você precisa ter 18 anos ou mais para se cadastrar.";	
     	}
     	
     	Usuario usuarioExistente = this.usuarioRepository.findByCpfOrLogin(usuario.getCpf(), usuario.getLogin());
     	
     	if(usuarioExistente != null) {
-    		throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Usuario ja existe");	
+    		return "Usuario ja existe.";	
     	}
     	
-       return usuarioRepository.save(usuario);     
+        usuarioRepository.save(usuario);     
+        return "Usuario criado com sucesso.";
     }
     
     public Usuario logarUsuario(Usuario usuario){

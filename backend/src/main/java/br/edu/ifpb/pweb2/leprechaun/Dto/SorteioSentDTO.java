@@ -12,6 +12,7 @@ public class SorteioSentDTO {
 	private String[] dezenasSorteadas;
 	private LocalDate dataHora;
 	private double valorPremio;
+	private String mensagem;
 	
 	private List<String> ganhador;
 	

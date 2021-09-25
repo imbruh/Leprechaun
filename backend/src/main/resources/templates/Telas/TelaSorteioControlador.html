@@ -28,31 +28,42 @@
 			  <div class="card-body">
 				<h4 class="card-text text-center" th:text = "'Sorteio em aberto'" />
 			  	
-			  	<div th:if="${sorteio.getControlador.id == usuario.getId}">
+			  	<div th:if="${sorteio.getControlador.id == session.usuario.id}">
 			  		<p class="card-text text-center" th:text = "'Quantidade de apostas: 0' " />
 				    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
 				    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
 			  	</div>
 			  	
-			  	<div th:unless="${sorteio.getControlador.id == usuario.getId}">
+			  	<div th:unless="${sorteio.getControlador.id == session.usuario.id}">
 				    <p class="card-text text-center" th:text="'Controlador do Sorteio: ' + ${sorteio.getControlador.getNome}"/>
 				    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
 				    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
 			  		<p style="font-weight:bold" class="card-text text-center" th:text = "'Você só poderá criar um novo sorteio a partir do dia ...'" />
-			  		
 			  	</div>
+			  	
 			  </div>
 	  
 			</div>
 		</div>
 		
-		<div th:if="${sorteio.getControlador.getId == usuario.getId }">
-		<div class="btn-aposta" th:if="${sorteio.getDataHora.toLocalDate==data}">
-			<a th:href="@{/sorteio/aposta/{idUsuario} (idUsuario=${usuario.id})}"> <button type="button" class="btn btn-dark mt-2">Finalizar Sorteio</button> </a>
+		<div th:if="${sorteio.getControlador.getId == session.usuario.id }">
+		<div class="btn-aposta" th:if="${sorteio.getDataHora==data}">
+			
+			<form th:action="@{/sorteio/realizar-sorteio/{idControlador} (idControlador=${session.usuario.id})}" th:object=${sorteio} method="POST">
+				<select name="tipo" class="form-select" aria-label="Default select example" style="width: 10rem">
+				  <option value="ALEATORIO">Aleatório</option>
+				  <option value="NAO_ALEATORIO">Não Aleatório</option>
+				</select>
+								
+				<button type="submit" class="btn btn-dark mt-2">Finalizar Sorteio</button> 
+			</form>
+		
 		</div>
-		<div class="btn-aposta" th:unless="${sorteio.getDataHora.toLocalDate==data}">
+		
+		<div class="btn-aposta" th:unless="${sorteio.getDataHora==data}">		
 			<button type="button" class="btn btn-dark mt-2" disabled>Finalizar Sorteio</button>
 		</div>
+		
 	</div>
 	</div>
 	
