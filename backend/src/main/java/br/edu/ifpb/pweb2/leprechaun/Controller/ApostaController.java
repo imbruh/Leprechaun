@@ -1,23 +1,25 @@
 package br.edu.ifpb.pweb2.leprechaun.Controller;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.edu.ifpb.pweb2.leprechaun.Dto.ApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.ApostasFavoritasDTO;
-import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
+import br.edu.ifpb.pweb2.leprechaun.Dto.FazerApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Service.ApostaService;
 
 @Controller
@@ -26,17 +28,21 @@ public class ApostaController {
     @Autowired
     ApostaService apostaService;
     
-    @RequestMapping("/aposta")
-    public String index(Model model, @ModelAttribute("usuario") Usuario usuario) {
-    	model.addAttribute("usuario", usuario);
-//    	
-//    	if(mensagem.isEmpty()) {
-//    		mensagem = null;
-//    	}
-//    	 	
-//    	model.addAttribute("mensagem", mensagem);
+    @RequestMapping("/aposta/{idCliente}")
+    public ModelAndView index(ModelAndView mav, HttpSession session,@PathVariable Long idCliente) {
     	
-    	return "Telas/TelaAposta";
+    	List<String[]> apostasFav = apostaService.listarApostasFavoritas(idCliente);
+    	
+    	for (String[] aposta: apostasFav) {
+    		System.out.println(aposta.toString());
+    	}
+    	
+    	mav.addObject("fazerApostaDTO", new FazerApostaDTO());
+    	mav.addObject("apostasFav",apostasFav);
+    	mav.setViewName("Telas/TelaAposta");
+    	
+    	
+    	return mav;
     }
    
     @PostMapping("/criar")

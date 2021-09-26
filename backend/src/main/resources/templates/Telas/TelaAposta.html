@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/estilo.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/telaAposta.css}" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+<title>Tela de Aposta</title>
+</head>
+
+<body>
+			  
+	<div th:insert="menu :: menu"></div>
+	
+	<div class="container">
+		
+		<div class="card center"  style="width: 60rem;">
+		  		  
+		  <form class="mb-2" th:action="@{/sorteio/realizar-sorteio-nao-aleatorio/{idControlador} (idControlador=${session.usuario.id})}" th:object="${fazerApostaDTO}" method="POST">
+			  	  
+			  <div class="numeros"> 
+			  	<h6>Digite entre 6 e 10 números</h6>
+			  	
+			  	<div class="col-md-6 mb-3">
+			    	<input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n1}" required><span>*</span>
+			 	</div>
+			  
+				 <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n2}" required><span>*</span>
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n3}" required><span>*</span>
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n4}" required><span>*</span>
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n5}" required><span>*</span>
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n6}" required><span>*</span>
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n7}">
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n8}">
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n9}">
+				  </div>
+				  
+				   <div class="col-md-6 mb-3">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n10}">
+				  </div>
+				  
+			  </div>
+			     <div th:object="${apostasFav}">
+				     <select th:field="*{apostasFav}">
+					    <option th:each="i : ${apostasFav}" th:value="${apostasFav}" th:text="${apostasFav}">
+					    </option>
+					</select>
+			     </div>
+			     
+			  <div>
+			  	 <button type="submit" value="submit" class="btn btn-warning btn-sm mb-2 btn-apostar">Apostar</button>
+			  </div>
+			 
+			</div>
+		</form>	
+	  
+	</div>
+
+</body>
+</html>

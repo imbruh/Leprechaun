@@ -1,0 +1,19 @@
+body {
+	background-color: #7EA780;
+}
+
+.numeros {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.numeros h6 {
+	width: 100%;
+	text-align: center;
+}
+
+.numeros div {
+	margin-left: 10%; 
+	width: 70px
+}

@@ -2,18 +2,41 @@ body {
 	background-color: #7EA780;
 }
 
+.container {
+	display: flex;
+	justify-content: center;
+	margin-top: 100px;
+}
+
+.card {
+	box-shadow: 6px 8px 15px black;
+	border-radius: 5%;
+	background-color: #555555;
+	color: white;
+	text-align: center;
+}
+
 .numeros {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content:space-around;
 }
 
 .numeros h6 {
 	width: 100%;
 	text-align: center;
+	margin-top:5%;
+	margin-bottom:5%;
 }
 
 .numeros div {
-	margin-left: 10%; 
 	width: 70px
+}
+
+.btn-apostar{
+	margin-top:2%;
+}
+span{
+	color:rgb(255,227,14);
 }
