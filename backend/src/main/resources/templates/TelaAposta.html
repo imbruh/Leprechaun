@@ -16,51 +16,47 @@
 
 <body>
 
-	<div th:insert="menu :: menu"></div>
 	
-	<div class="container">
+	<div class="container" th:fragment="telaNumeros">
 		
-		<div class="card center" style="width: 21rem;">
+		<div class="card center"  style="width: 21rem;">
 			<div class="alert alert-danger" role="alert" th:if="${mensagem != null}">
 			  <p th:text=${mensagem}/>
 			</div>
-		
-		  <h4 style="margin-top: 10px">APOSTA</h4>
-		  
-		  <form class="mb-2" action="/login/usuario" th:object="${usuario}" method="POST">
 			  
-			  
+		  <form class="mb-2" th:action="@{/sorteio/realizar-sorteio-nao-aleatorio/{idControlador} (idControlador=${session.usuario.id})}" th:object="${dezenasDTO}" method="POST">
+			  	  
 			  <div class="numeros"> 
 			  	<h6>Digite seus números</h6>
 			  	
 			  	<div class="col-md-6 mb-3">
-			    	<input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{login}" id="inputLogin">
+			    	<input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n1}">
 			 	</div>
 			  
 				 <div class="col-md-6 mb-3">
-				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{login}" id="inputLogin">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n2}">
 				  </div>
 				  
 				   <div class="col-md-6 mb-3">
-				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{login}" id="inputLogin">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n3}">
 				  </div>
 				  
 				   <div class="col-md-6 mb-3">
-				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{login}" id="inputLogin">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n4}">
 				  </div>
 				  
 				   <div class="col-md-6 mb-3">
-				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{login}" id="inputLogin">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n5}">
 				  </div>
 				  
 				   <div class="col-md-6 mb-3">
-				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{login}" id="inputLogin">
+				    <input type="text" size="2" maxlength="2" class="form-control-sm" th:field="*{n6}">
 				  </div>
 				  
 			  </div>
 			     
 			  <div>
-			  	 <button type="submit" value="submit" class="btn btn-warning btn-sm mb-2" style="width: 20%">Entrar</button>
+			  	 <button type="submit" value="submit" class="btn btn-warning btn-sm mb-2">Finalizar</button>
 			  </div>
 			 
 			</div>

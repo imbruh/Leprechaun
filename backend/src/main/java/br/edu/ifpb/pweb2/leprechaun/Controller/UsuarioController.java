@@ -123,6 +123,7 @@ public class UsuarioController {
     		return "redirect:/sorteio/cliente";    		
     	}
     	
+    	session.setAttribute("aleatorio", true);
     	return "redirect:/sorteio/controlador";
     	
     }
@@ -148,7 +149,7 @@ public class UsuarioController {
     }
     
     @RequestMapping("/sorteio/controlador")
-    public ModelAndView getTelaSorteioControlador(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario) {
+    public ModelAndView getTelaSorteioControlador(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, HttpSession session) {
     	
     	//CALCULAR QUANTIDADE DE APOSTAS DO SORTEIO
     	

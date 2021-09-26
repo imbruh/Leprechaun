@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifpb.pweb2.leprechaun.Dto.DezenasDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.SorteioDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.SorteioSentDTO;
 import br.edu.ifpb.pweb2.leprechaun.Model.Sorteio;
@@ -60,15 +61,36 @@ public class SorteioController {
     @RequestMapping("/realizar-sorteio/{idControlador}")
     public String realizarSorteio(ModelAndView mav, @ModelAttribute("sorteio") Sorteio sorteio, @PathVariable Long idControlador, HttpSession session, RedirectAttributes redirectAttributes){
     	
-    	SorteioSentDTO sorteioDTO;
-    	
+    	SorteioSentDTO sorteioDTO = null;
+
     	if(sorteio.getTipo() == TipoSorteio.ALEATORIO) {
-    		
     		sorteioDTO = sorteioService.realizarSorteio(null, sorteio.getTipo(), idControlador); 
+ 
     	}
     	else {
-    		sorteioDTO = sorteioService.realizarSorteio(sorteio.getDezenasSorteadas(), sorteio.getTipo(), idControlador);
+    		session.setAttribute("aleatorio", false);
+    		redirectAttributes.addFlashAttribute("dezenasDTO", new DezenasDTO());
+    		return "redirect:/sorteio/controlador";
     	}
+    	
+    	String dezenas = Arrays.toString(sorteioDTO.getDezenasSorteadas());
+    	dezenas = dezenas.replace(", ", " - ").replace("[", "").replace("]", "");
+    	
+    	redirectAttributes.addFlashAttribute("dataFormatada", sorteioDTO.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
+    	redirectAttributes.addFlashAttribute("dezenas", dezenas);
+    	redirectAttributes.addFlashAttribute("sorteioDTO", sorteioDTO);
+    	
+    	return "redirect:/sorteio/realizado";
+    }
+    
+    @RequestMapping("/realizar-sorteio-nao-aleatorio/{idControlador}")
+    public String realizarSorteioNaoAleatorio(ModelAndView mav, @ModelAttribute("dezenasDTO") DezenasDTO dezenasDTO, @PathVariable Long idControlador, HttpSession session, RedirectAttributes redirectAttributes){
+    		
+    	String[] x = {dezenasDTO.getN1(), dezenasDTO.getN2(), dezenasDTO.getN3(), dezenasDTO.getN4(), dezenasDTO.getN5(), dezenasDTO.getN6()}; 
+    	 	
+    	SorteioSentDTO sorteioDTO = sorteioService.realizarSorteio(x, TipoSorteio.NAO_ALEATORIO, idControlador); 
+		
+		redirectAttributes.addFlashAttribute("dezenasDTO", new DezenasDTO());
     	
     	String dezenas = Arrays.toString(sorteioDTO.getDezenasSorteadas());
     	dezenas = dezenas.replace(", ", " - ").replace("[", "").replace("]", "");

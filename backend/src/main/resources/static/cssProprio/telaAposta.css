@@ -6,13 +6,11 @@ body {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	border: 1px solid black;
 }
 
 .numeros h6 {
 	width: 100%;
 	text-align: center;
-	padding-left: 30px;
 }
 
 .numeros div {

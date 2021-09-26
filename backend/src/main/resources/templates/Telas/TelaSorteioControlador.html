@@ -9,6 +9,7 @@
 <link rel="stylesheet" th:href="@{/css/estilo.css}" />
 <link rel="stylesheet" th:href="@{/cssProprio/telaInicialSorteio.css}" />
 <link rel="stylesheet" th:href="@{/cssProprio/main.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/telaAposta.css}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
 
 <title>Tela Inicial</title>
@@ -51,13 +52,22 @@
 			
 			<form th:action="@{/sorteio/realizar-sorteio/{idControlador} (idControlador=${session.usuario.id})}" th:object=${sorteio} method="POST">
 				<select name="tipo" class="form-select" aria-label="Default select example" style="width: 10rem">
+				  <option>Escolha o tipo</option>
 				  <option value="ALEATORIO">Aleatório</option>
 				  <option value="NAO_ALEATORIO">Não Aleatório</option>
 				</select>
-								
+							
 				<button type="submit" class="btn btn-dark mt-2">Finalizar Sorteio</button> 
 			</form>
-		
+			
+			<div th:if="${session.aleatorio}">
+				
+			</div>
+			
+			<div th:unless="${session.aleatorio}">
+				<div th:include="telaAposta :: telaNumeros"></div>	
+			</div>
+				
 		</div>
 		
 		<div class="btn-aposta" th:unless="${sorteio.getDataHora==data}">		
