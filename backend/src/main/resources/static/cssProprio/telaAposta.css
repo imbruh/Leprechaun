@@ -37,6 +37,14 @@ body {
 .btn-apostar{
 	margin-top:2%;
 }
+
 span{
 	color:rgb(255,227,14);
+}
+
+.checkbox {
+	width: 250px;
+	position: absolute;
+	left: 70%;
+	top: 30%;
 }

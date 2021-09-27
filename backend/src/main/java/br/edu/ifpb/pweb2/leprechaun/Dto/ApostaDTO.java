@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ApostaDTO {
     
-    private Long idCliente;
-    private String[] numerosEscolhidos;
+    private Long idAposta;
+    private String mensagem;
 }

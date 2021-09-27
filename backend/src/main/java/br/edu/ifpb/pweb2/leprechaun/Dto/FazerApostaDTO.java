@@ -1,5 +1,9 @@
 package br.edu.ifpb.pweb2.leprechaun.Dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -16,5 +20,9 @@ public class FazerApostaDTO {
 	private String n9;
 	private String n10;
 
+	private List<String> apostasFavoritas = new ArrayList<>();
 	
+	private String apostaFav = ""; 
+	
+	private Boolean msgSucesso = false;
 }

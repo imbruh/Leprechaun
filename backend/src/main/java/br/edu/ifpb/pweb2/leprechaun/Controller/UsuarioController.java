@@ -123,6 +123,7 @@ public class UsuarioController {
     		return "redirect:/sorteio/cliente";    		
     	}
     	
+    	session.setAttribute("msgSucesso", false);
     	session.setAttribute("aleatorio", true);
     	return "redirect:/sorteio/controlador";
     	
