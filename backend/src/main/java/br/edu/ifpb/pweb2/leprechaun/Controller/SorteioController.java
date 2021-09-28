@@ -72,7 +72,7 @@ public class SorteioController {
     		redirectAttributes.addFlashAttribute("dezenasDTO", new DezenasDTO());
     		return "redirect:/sorteio/controlador";
     	}
-    	
+    	 	
     	String dezenas = Arrays.toString(sorteioDTO.getDezenasSorteadas());
     	dezenas = dezenas.replace(", ", " - ").replace("[", "").replace("]", "");
     	
@@ -86,9 +86,14 @@ public class SorteioController {
     @RequestMapping("/realizar-sorteio-nao-aleatorio/{idControlador}")
     public String realizarSorteioNaoAleatorio(ModelAndView mav, @ModelAttribute("dezenasDTO") DezenasDTO dezenasDTO, @PathVariable Long idControlador, HttpSession session, RedirectAttributes redirectAttributes){
     		
-    	String[] x = {dezenasDTO.getN1(), dezenasDTO.getN2(), dezenasDTO.getN3(), dezenasDTO.getN4(), dezenasDTO.getN5(), dezenasDTO.getN6()}; 
+    	String[] dezenasEnviar = {dezenasDTO.getN1(), dezenasDTO.getN2(), dezenasDTO.getN3(), dezenasDTO.getN4(), dezenasDTO.getN5(), dezenasDTO.getN6()}; 
     	 	
-    	SorteioSentDTO sorteioDTO = sorteioService.realizarSorteio(x, TipoSorteio.NAO_ALEATORIO, idControlador); 
+    	SorteioSentDTO sorteioDTO = sorteioService.realizarSorteio(dezenasEnviar, TipoSorteio.NAO_ALEATORIO, idControlador); 
+    	System.out.println(sorteioDTO);
+    	if(sorteioDTO.getMensagem() != null && sorteioDTO.getMensagem().equals("Não é permitido numeros iguais")) {
+    		redirectAttributes.addFlashAttribute("mensagem", sorteioDTO.getMensagem());
+    		return "redirect:/sorteio/controlador";
+    	}
 		
 		redirectAttributes.addFlashAttribute("dezenasDTO", new DezenasDTO());
     	

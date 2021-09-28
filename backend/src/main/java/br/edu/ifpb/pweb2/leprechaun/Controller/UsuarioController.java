@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.edu.ifpb.pweb2.leprechaun.Dto.DezenasDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.UsuarioLoginDTO;
 import br.edu.ifpb.pweb2.leprechaun.Model.Sorteio;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
@@ -150,7 +151,7 @@ public class UsuarioController {
     }
     
     @RequestMapping("/sorteio/controlador")
-    public ModelAndView getTelaSorteioControlador(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, HttpSession session) {
+    public ModelAndView getTelaSorteioControlador(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, @ModelAttribute("dezenasDTO") DezenasDTO dezenasDTO, HttpSession session) {
     	
     	//CALCULAR QUANTIDADE DE APOSTAS DO SORTEIO
     	

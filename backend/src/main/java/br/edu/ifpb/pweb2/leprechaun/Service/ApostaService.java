@@ -104,6 +104,9 @@ public class ApostaService {
         }
             
         for(int i=0; i<contNumeros; i++) {
+        	if(Integer.parseInt(numEscolhidos[i]) < 10) {
+        		numEscolhidos[i] = "0" + numEscolhidos[i];
+        	}
         	numerosSemEspacoBranco[i] = numEscolhidos[i];
         }
              

@@ -98,14 +98,26 @@ public class SorteioService {
 			if (tipoSorteio == TipoSorteio.ALEATORIO) {
 				dezenasEscolhidas = this.gerarNumeros();
 			}
-				
-			for (int x = 0; x<6; x++) {
-				if(Integer.parseInt(dezenasEscolhidas[x]) < 10 && dezenasEscolhidas[x].length()==1) {
-					String numero = "0"+dezenasEscolhidas[x];
-					dezenasEscolhidas[x]=numero;
+			
+			for(String de: dezenasEscolhidas) {
+				int cont = 0;
+				for (int i = 0; i<6; i++) {
+					if(cont < 2) {
+						if(Integer.parseInt(dezenasEscolhidas[i]) < 10 && dezenasEscolhidas[i].length()==1) {
+							String numero = "0"+dezenasEscolhidas[i];
+							dezenasEscolhidas[i]=numero;
+						}
+						if(de.equals(dezenasEscolhidas[i])) {
+							cont ++;
+						}
+					}
+					else {
+						dto.setMensagem("Não é permitido numeros iguais");
+						return dto;
+					}			
 				}
 			}
-				
+			
 			ultimoSorteio.setDezenasSorteadas(dezenasEscolhidas);
 			ultimoSorteio.setTipo(tipoSorteio);
 			
@@ -115,7 +127,6 @@ public class SorteioService {
 			
 			List<Usuario> vencedores = this.listarVencendor(apostas, dezenasEscolhidas);
 			
-			dto = new SorteioSentDTO();
 			dto.setDezenasSorteadas(ultimoSorteio.getDezenasSorteadas());
 			dto.setDataHora(ultimoSorteio.getDataHora());
 			dto.setValorPremio(ultimoSorteio.getValorPremio());
