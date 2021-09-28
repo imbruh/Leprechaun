@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.edu.ifpb.pweb2.leprechaun.Dto.ApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.ApostasFavoritasDTO;
+import br.edu.ifpb.pweb2.leprechaun.Dto.ConferirApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.DezenasDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.FazerApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Model.Aposta;
@@ -76,15 +77,25 @@ public class ApostaController {
     				  	    	 	    
         return "redirect:/aposta/" + idCliente;
     }
-
-    @PostMapping("/criarApostasFavoritas")
-    public ResponseEntity<?> criarApostaFavorita(@RequestBody ApostasFavoritasDTO dto) {
-        this.apostaService.criarApostaFavorita(dto.getIdCliente(), dto.getIdAposta());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
     
-    @GetMapping("/listar-apostas-favoristas")
-    public List<String> listarApostasFavoritas(@RequestParam Long idCliente) {
-    	return this.apostaService.listarApostasFavoritas(idCliente);
+    @RequestMapping("/aposta/conferir/{idCliente}")
+    public ModelAndView conferirApostas(ModelAndView mav, @PathVariable Long idCliente, RedirectAttributes redirectAttributes, HttpSession session) {
+          
+    	List<ConferirApostaDTO> lista = this.apostaService.conferirApostas(idCliente);
+    	
+    	mav.addObject("listaApostas", lista);
+    	mav.setViewName("Telas/TelaConferirAposta");
+        return mav;
     }
+
+//    @PostMapping("/criarApostasFavoritas")
+//    public ResponseEntity<?> criarApostaFavorita(@RequestBody ApostasFavoritasDTO dto) {
+//        this.apostaService.criarApostaFavorita(dto.getIdCliente(), dto.getIdAposta());
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+    
+//    @GetMapping("/listar-apostas-favoristas")
+//    public List<String> listarApostasFavoritas(@RequestParam Long idCliente) {
+//    	return this.apostaService.listarApostasFavoritas(idCliente);
+//    }
 }

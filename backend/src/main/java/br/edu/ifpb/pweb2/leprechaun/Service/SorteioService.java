@@ -87,7 +87,7 @@ public class SorteioService {
 		
 		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
 				
-		LocalDate hoje = LocalDate.now(); //substituir para LocalDateTime.now();
+		LocalDate hoje = LocalDate.now(); 
 		if(hoje.isBefore(ultimoSorteio.getDataHora())) {
 			dto.setMensagem("O sorteio só poderá ser realizado no dia: " + ultimoSorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		}

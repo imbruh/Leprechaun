@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.ifpb.pweb2.leprechaun.Dto.ApostaDTO;
+import br.edu.ifpb.pweb2.leprechaun.Dto.ConferirApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.FazerApostaDTO;
 import br.edu.ifpb.pweb2.leprechaun.Model.Aposta;
 import br.edu.ifpb.pweb2.leprechaun.Model.ApostasFavoritas;
@@ -128,11 +129,6 @@ public class ApostaService {
         int qntNumEscolhidos = numerosSemEspacoBranco.length;
         double valor = 0;
 
-//        if(qntNumEscolhidos < 6 || qntNumEscolhidos > 10) {
-//           dto.setMensagem("Escolha entre 6 e 10 numeros");
-//           return dto;
-//        }
-
         if(qntNumEscolhidos == 6) {
             valor = 3;
         } 
@@ -206,5 +202,41 @@ public class ApostaService {
     	}
 	    	
     	return listaNumeros;
+    }
+    
+    public List<ConferirApostaDTO> conferirApostas(Long idCliente) { 
+    	Usuario cliente = this.usuarioRepository.findById(idCliente).orElse(null);
+    	
+    	if(cliente == null) {
+    		return null;
+    	}
+    	
+    	List<Aposta> apostasDoCliente = this.apostaRepository.findByCliente(cliente);
+    		
+    	List<ConferirApostaDTO> conferirDTO = new ArrayList<>();
+    	
+    	for(Aposta aposta: apostasDoCliente) {
+    			int cont = 0;
+    			for(String numero: aposta.getNumEscolhidos()) {
+    				if(aposta.getSorteio().getDezenasSorteadas() != null) {
+    					for(String numSorteio: aposta.getSorteio().getDezenasSorteadas()) {
+        					if(numero.equals(numSorteio)) {
+        						cont ++;
+        					}
+        				}
+    				}
+    			}
+    		if(aposta.getSorteio().getDezenasSorteadas()!=null)	{
+    			ConferirApostaDTO dto = new ConferirApostaDTO();
+        		dto.setAcertos(cont);	
+        		dto.setDezenasSorteadas(Arrays.asList(aposta.getSorteio().getDezenasSorteadas()));
+        		dto.setNumerosApostados(Arrays.asList(aposta.getNumEscolhidos()));
+        		dto.setIdSorteio(aposta.getSorteio().getId());
+        		
+        		conferirDTO.add(dto);
+    		}	
+    	}
+   	
+    	return conferirDTO;    	 	
     }
 }

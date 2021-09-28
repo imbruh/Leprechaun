@@ -14,4 +14,7 @@ public interface ApostaRepository extends JpaRepository<Aposta, Long>{
 	public List<Aposta> findBySorteio(Sorteio sorteio);
 	
 	public Aposta findByNumEscolhidos(String[] numeros);
+
+	public List<Aposta> findByCliente(Usuario cliente);
+	
 }

@@ -25,7 +25,7 @@
 	    <div class="collapse navbar-collapse" id="navbarText">
 	      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="#">Conferir apostas</a>
+	          <a class="nav-link active" aria-current="page" th:href="@{/aposta/conferir/{idCliente} (idCliente=${session.usuario.id})}">Conferir apostas</a>
 	      </ul>
 	      <span class="navbar-text me-4" th:text = "${session.usuario.nome}"/>
 	     <a th:href="@{/sair}"> <button type="button"  class="btn btn-warning">Sair<i class="fas fa-sign-out-alt ms-2"></i></button> </a>

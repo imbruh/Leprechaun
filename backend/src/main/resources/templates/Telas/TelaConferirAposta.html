@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/estilo.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/telaInicialSorteio.css}" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+<title>Tela Inicial</title>
+
+</head>
+
+<body>
+
+	<div th:insert="menu :: menu"></div>
+	
+	<div class="container">
+		<table class="table table-secondary table-striped table-hover" style="text-align: center" th:if="${listaApostas.size > 0}">
+		  <thead>
+		    <tr class="table-secondary">
+		      <th scope="col">SORTEIO</th>
+		      <th scope="col">DEZENAS SORTEADAS</th>
+		      <th scope="col">NUMEROS APOSTADOS</th>
+		      <th scope="col">QUANT. ACERTOS</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr th:each="i : ${listaApostas}">
+		      <th scope="row" th:text="${i.idSorteio}"></th>
+		      <td th:text="${i.dezenasSorteadas}"></td>
+		      <td th:text="${i.numerosApostados}"></td>
+		      <td th:text="${i.acertos}"></td>
+		    </tr>
+		  </tbody>
+		</table>
+		
+		<h2 th:unless="${listaApostas.size > 0}">Você não possui apostas anteriores</h2>
+		
+	</div>
+	
+</body>
