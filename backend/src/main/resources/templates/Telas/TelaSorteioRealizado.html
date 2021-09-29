@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/estilo.css}" />
-<link rel="stylesheet" th:href="@{/cssProprio/telaInicialSorteio.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/telaSorteioControlador.css}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
 
 <title>Tela Inicial</title>
@@ -27,10 +27,11 @@
 			  <div class="card-body">
 			   <h4 style="text-align: center" th:text="${dezenas}"></h4>
 				<dl class="list-group">
-				  <dt class="list-group-item" th:text="'Data do Sorteio: ' + ${dataFormatada}"></dt> 
-				  <dt class="list-group-item" th:text="'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteioDTO.getValorPremio, 0, 'POINT', 2, 'COMMA')}"></dt>
-				  <dt class="list-group-item" th:text="'Ganhador do Sorteio: '"></dt>			
-				  	<dd class="list-group-item" th:each="usuario: ${sorteioDTO.ganhador}" th:text=" '- ' + ${usuario}"></dd>
+				  <dt class="list-group-item list-group-item-dark" th:text="'Data do Sorteio: ' + ${dataFormatada}"></dt> 
+				  <dt class="list-group-item list-group-item-dark" th:text="'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteioDTO.getValorPremio, 0, 'POINT', 2, 'COMMA')}"></dt>
+				  <dt class="list-group-item list-group-item-dark" th:text="'Ganhador do Sorteio: '"></dt>			
+				  	<dd th:if="${!sorteioDTO.ganhador.isEmpty}" class="list-group-item list-group-item-dark" th:each="usuario: ${sorteioDTO.ganhador}" th:text=" '- ' + ${usuario}"></dd>
+					<dd th:unless="${!sorteioDTO.ganhador.isEmpty}" class="list-group-item list-group-item-dark" th:text=" 'Não houve ganhadores para esse sorteio.' "></dd>
 				</dl>
 			  </div>
 	  

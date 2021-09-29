@@ -185,4 +185,19 @@ public class SorteioService {
 		return usuarios;
 	}
 	
+	public String getDataProxSorteio () {
+		Sorteio ultimoSorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
+		
+		if(ultimoSorteio != null) {
+			String diaDisponivel = sorteioRepository.ultimaData(ultimoSorteio.getDataHora()).replace(" ","T");
+
+	        LocalDate diaDisponivelConvert = LocalDate.parse(diaDisponivel);
+	             
+         	
+	        return "Você só poderá criar um sorteio a partir do dia "+ diaDisponivelConvert.format(DateTimeFormatter.ofPattern("dd/MM/yyy"));
+		}
+		else {
+			return null;
+		}
+	}
 }

@@ -112,4 +112,10 @@ public class SorteioController {
     	mav.setViewName("Telas/TelaSorteioRealizado");
     	return mav;
     }
+    
+    @RequestMapping("/setar-aleatorio")
+    public String setarAleatorio(RedirectAttributes redirectAttributes, HttpSession session) {
+    	session.setAttribute("aleatorio", true);
+    	return "redirect:/sorteio/controlador";
+    }
 }

@@ -28,9 +28,8 @@
 	<div class="container">
 		
 		<div class="card center" style="width: 21rem;">
-			<div class="alert alert-danger" role="alert" th:if="${mensagem != null}">
-			  <p th:text=${mensagem}/>
-			</div>
+			
+			<div th:insert="Fragmentos/FragmentoMensagens :: fragmentoMsg"></div>
 		
 		  <h4 style="margin-top: 10px">LOGIN</h4>
 		  
@@ -56,6 +55,4 @@
 	  
 	</div>
 	
-	
-	<script th:src="@{js/bootstrap.bundle.min.js}"></script>
 </body>

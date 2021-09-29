@@ -232,8 +232,8 @@ public class ApostaService {
     		if(aposta.getSorteio().getDezenasSorteadas()!=null)	{
     			ConferirApostaDTO dto = new ConferirApostaDTO();
         		dto.setAcertos(cont);	
-        		dto.setDezenasSorteadas(Arrays.asList(aposta.getSorteio().getDezenasSorteadas()));
-        		dto.setNumerosApostados(Arrays.asList(aposta.getNumEscolhidos()));
+        		dto.setDezenasSorteadas(this.formatarNumeros(aposta.getSorteio().getDezenasSorteadas()));
+        		dto.setNumerosApostados(this.formatarNumeros(aposta.getNumEscolhidos()));
         		dto.setIdSorteio(aposta.getSorteio().getId());
         		
         		conferirDTO.add(dto);
@@ -242,4 +242,13 @@ public class ApostaService {
    	
     	return conferirDTO;    	 	
     }
+    
+    public String formatarNumeros(String[] lista) {
+    	    	
+    	String numeros = Arrays.toString(lista);
+    	numeros = numeros.replace(", ", " - ").replace("[", "").replace("]", "");
+    
+    	return numeros;
+    	
+	}
 }

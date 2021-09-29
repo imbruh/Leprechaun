@@ -27,7 +27,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.edu.ifpb.pweb2.leprechaun.Dto.DezenasDTO;
 import br.edu.ifpb.pweb2.leprechaun.Dto.UsuarioLoginDTO;
 import br.edu.ifpb.pweb2.leprechaun.Model.Sorteio;
+import br.edu.ifpb.pweb2.leprechaun.Model.TipoSorteio;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
+import br.edu.ifpb.pweb2.leprechaun.Repository.ApostaRepository;
 import br.edu.ifpb.pweb2.leprechaun.Repository.UsuarioRepository;
 import br.edu.ifpb.pweb2.leprechaun.Service.SorteioService;
 import br.edu.ifpb.pweb2.leprechaun.Service.UsuarioService;
@@ -43,6 +45,9 @@ public class UsuarioController {
    
    @Autowired
    SorteioService sorteioService;
+   
+   @Autowired
+   ApostaRepository apostaRepository;
     
     @GetMapping("/")
     public List<Usuario> getUsuarios() {
@@ -142,7 +147,14 @@ public class UsuarioController {
     	mav.addObject("usuario", usuario);
     	mav.setViewName("Telas/TelaSorteioCliente");
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
+    	
+    	if(sorteio!= null && sorteio.getDataHora().isBefore(LocalDate.now())) {
+    		this.sorteioService.realizarSorteio(null, TipoSorteio.ALEATORIO, usuario.getId());
+    		sorteio = null;
+    	}
+    	
     	mav.addObject("sorteio", sorteio);
+    	   	
     	if(sorteio != null) {
     		mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
     	}
@@ -153,18 +165,25 @@ public class UsuarioController {
     @RequestMapping("/sorteio/controlador")
     public ModelAndView getTelaSorteioControlador(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, @ModelAttribute("dezenasDTO") DezenasDTO dezenasDTO, HttpSession session) {
     	
-    	//CALCULAR QUANTIDADE DE APOSTAS DO SORTEIO
-    	
     	mav.addObject("usuario", usuario);
     	mav.setViewName("Telas/TelaSorteioControlador");
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
+    	if(sorteio!= null && sorteio.getDataHora().isBefore(LocalDate.now())) {
+    		this.sorteioService.realizarSorteio(null, TipoSorteio.ALEATORIO, usuario.getId());
+    		sorteio = null;
+    	}
+    	
     	mav.addObject("sorteio", sorteio);
     	mav.addObject("data", LocalDate.now());
     	mav.addObject("novoSorteio", new Sorteio());
     	if(sorteio != null) {
     		mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
+    		mav.addObject("quantApostas", this.apostaRepository.getQuantidadeApostasSorteio(sorteio.getId()));
     	}
     	
+    	String dataProxSorteio = this.sorteioService.getDataProxSorteio();
+    	mav.addObject("dataProxSorteio", dataProxSorteio);
+    	  	
     	return mav;
     }
     

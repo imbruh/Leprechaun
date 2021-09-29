@@ -7,9 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/estilo.css}" />
-<link rel="stylesheet" th:href="@{/cssProprio/telaInicialSorteio.css}" />
-<link rel="stylesheet" th:href="@{/cssProprio/main.css}" />
-<link rel="stylesheet" th:href="@{/cssProprio/telaAposta.css}" />
+<link rel="stylesheet" th:href="@{/cssProprio/telaSorteioControlador.css}" />
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
 
 <title>Tela Inicial</title>
@@ -20,7 +19,7 @@
 
 	<div th:insert="menu :: menu"></div>
 	
-	<div th:if="${sorteio != null}">
+	<div class="main" th:if="${sorteio != null}">
 		<div class="container">
 			<div class="card center" style="width: 18rem;">
 			  
@@ -30,7 +29,7 @@
 				<h4 class="card-text text-center" th:text = "'Sorteio em aberto'" />
 			  	
 			  	<div th:if="${sorteio.getControlador.id == session.usuario.id}">
-			  		<p class="card-text text-center" th:text = "'Quantidade de apostas: 0' " />
+			  		<p class="card-text text-center" th:text = "'Quantidade de apostas: ' + ${quantApostas}" />
 				    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
 				    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
 			  	</div>
@@ -39,52 +38,48 @@
 				    <p class="card-text text-center" th:text="'Controlador do Sorteio: ' + ${sorteio.getControlador.getNome}"/>
 				    <p class="card-text text-center" th:text = "'Valor do Prêmio: R$' + ${#numbers.formatDecimal(sorteio.getValorPremio, 0, 'POINT', 2, 'COMMA')}" />
 				    <p class="card-text text-center" th:text = "'Data do Sorteio: ' + ${dataFormatada}" />
-			  		<p style="font-weight:bold" class="card-text text-center" th:text = "'Você só poderá criar um novo sorteio a partir do dia ...'" />
+			  		<p style="font-weight:bold" class="card-text text-center" th:text = " ${dataProxSorteio} " />
 			  	</div>
 			  	
 			  </div>
 	  
 			</div>
-		</div>
-		
-		<div th:if="${sorteio.getControlador.getId == session.usuario.id }">
-		<div class="btn-aposta" th:if="${sorteio.getDataHora==data}">
 			
-			<form th:action="@{/sorteio/realizar-sorteio/{idControlador} (idControlador=${session.usuario.id})}" th:object=${sorteio} method="POST">
-				<select name="tipo" class="form-select" aria-label="Default select example" style="width: 10rem">
-				  <option>Escolha o tipo</option>
-				  <option value="ALEATORIO">Aleatório</option>
-				  <option value="NAO_ALEATORIO">Não Aleatório</option>
-				</select>
+			<div th:if="${sorteio.getControlador.getId == session.usuario.id }">
+			<div th:if="${sorteio.getDataHora==data}">
+			
+				<h4 th:if="${session.aleatorio}">Finalizar Sorteio:</h4>
+				<form th:if="${session.aleatorio}" th:action="@{/sorteio/realizar-sorteio/{idControlador} (idControlador=${session.usuario.id})}" th:object=${sorteio} method="POST">
+					<select name="tipo" class="form-select" aria-label="Default select example" style="width: 15rem">
+					  <option>Escolha o tipo do sorteio</option>
+					  <option value="ALEATORIO">Aleatório</option>
+					  <option value="NAO_ALEATORIO">Não Aleatório</option>
+					</select>
+								
+					<button th:if="${session.aleatorio}" type="submit" class="btn btn-dark mt-2">Finalizar Sorteio</button> 
+				</form>
 							
-				<button type="submit" class="btn btn-dark mt-2">Finalizar Sorteio</button> 
-			</form>
-			
-			<div th:if="${session.aleatorio}">
+				<div th:if="${!session.aleatorio}" class="fragmento">
+					<div th:include="Fragmentos/FragmentoSorteioNaoAleatorio :: telaNumeros"></div>	
+				</div>
 				
 			</div>
-			
-			<div th:unless="${session.aleatorio}">
-				<div th:include="FragmentoSorteioNaoAleatorio :: telaNumeros"></div>	
-			</div>
-				
-		</div>
 		
 		<div class="btn-aposta" th:unless="${sorteio.getDataHora==data}">		
 			<button type="button" class="btn btn-dark mt-2" disabled>Finalizar Sorteio</button>
 		</div>
 		
 	</div>
+		</div>
+		
+		
 	</div>
 	
 	
 	<div th:unless="${sorteio != null}">
 		<div class="container">
 		
-		<div class="card center" style="width: 21rem;">
-			<div class="alert alert-danger" role="alert" th:if="${mensagem != null}">
-			  <p th:text=${mensagem}/>
-			</div>
+		<div th:insert="Fragmentos/FragmentoMensagens :: fragmentoMsg"></div>
 		
 		  <h4 style="margin-top: 10px">CRIAR SORTEIO</h4>
 		  
@@ -110,5 +105,4 @@
 	</div>
 	</div>
 	
-	<script th:src="@{js/bootstrap.bundle.min.js}"></script>
 </body>

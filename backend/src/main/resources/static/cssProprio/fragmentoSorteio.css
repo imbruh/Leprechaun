@@ -2,6 +2,10 @@ body {
 	background-color: #7EA780;
 }
 
+.card-fragmento {
+	margin-top: 3%;
+}
+
 .numeros {
 	display: flex;
 	flex-direction: row;

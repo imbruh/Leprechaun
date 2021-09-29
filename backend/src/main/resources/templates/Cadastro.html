@@ -27,10 +27,7 @@
 
 	<div class="container">
 		
-		<div class="card center" style="width: 36rem;">
-			<div class="alert alert-danger" role="alert" th:if="${mensagem != null}">
-			  <p th:text=${mensagem}/>
-			</div>
+		<div th:insert="Fragmentos/FragmentoMensagens :: fragmentoMsg"></div>
 		
 		  <h3 style="margin-top: 10px">CADASTRO</h3>
 		  
