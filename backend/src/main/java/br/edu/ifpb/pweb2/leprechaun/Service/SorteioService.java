@@ -110,6 +110,10 @@ public class SorteioService {
 						if(de.equals(dezenasEscolhidas[i])) {
 							cont ++;
 						}
+						if(dezenasEscolhidas[i].equals("00") || Integer.parseInt(dezenasEscolhidas[i]) > 60)  {
+			        		dto.setMensagem("Os números devem ser entre 01 e 60.");
+			        		return dto;
+			        	}
 					}
 					else {
 						dto.setMensagem("Não é permitido numeros iguais");

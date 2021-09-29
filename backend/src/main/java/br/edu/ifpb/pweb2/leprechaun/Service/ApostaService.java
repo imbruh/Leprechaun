@@ -104,8 +104,12 @@ public class ApostaService {
         }
             
         for(int i=0; i<contNumeros; i++) {
-        	if(Integer.parseInt(numEscolhidos[i]) < 10) {
+        	if(Integer.parseInt(numEscolhidos[i]) < 10 && numEscolhidos[i].length()==1) {
         		numEscolhidos[i] = "0" + numEscolhidos[i];
+        	}
+        	else if(numEscolhidos[i].equals("00") || Integer.parseInt(numEscolhidos[i]) > 60)  {
+        		dto.setMensagem("Os números devem ser entre 01 e 60.");
+        		return dto;
         	}
         	numerosSemEspacoBranco[i] = numEscolhidos[i];
         }

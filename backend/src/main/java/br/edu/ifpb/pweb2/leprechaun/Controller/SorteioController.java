@@ -89,12 +89,14 @@ public class SorteioController {
     	String[] dezenasEnviar = {dezenasDTO.getN1(), dezenasDTO.getN2(), dezenasDTO.getN3(), dezenasDTO.getN4(), dezenasDTO.getN5(), dezenasDTO.getN6()}; 
     	 	
     	SorteioSentDTO sorteioDTO = sorteioService.realizarSorteio(dezenasEnviar, TipoSorteio.NAO_ALEATORIO, idControlador); 
-    	System.out.println(sorteioDTO);
-    	if(sorteioDTO.getMensagem() != null && sorteioDTO.getMensagem().equals("Não é permitido numeros iguais")) {
+
+    	if(sorteioDTO.getMensagem() != null && (sorteioDTO.getMensagem().equals("Não é permitido numeros iguais") || sorteioDTO.getMensagem().equals("Os números devem ser entre 01 e 60."))) {
+    		
     		redirectAttributes.addFlashAttribute("mensagem", sorteioDTO.getMensagem());
+    		System.out.println("bbbbbb");
     		return "redirect:/sorteio/controlador";
     	}
-		
+    	System.out.println("aaaaa");
 		redirectAttributes.addFlashAttribute("dezenasDTO", new DezenasDTO());
     	
     	String dezenas = Arrays.toString(sorteioDTO.getDezenasSorteadas());
