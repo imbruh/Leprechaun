@@ -139,7 +139,7 @@ public class UsuarioController {
     public ModelAndView getTelaSorteioCliente(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario) {
 
     	mav.addObject("usuario", usuario);
-    	mav.setViewName("Telas/TelaSorteioCliente");
+    	mav.setViewName("Telas/TelaSorteioCliente"); 
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
     	if(sorteio == null) {
     		return mav;
@@ -166,6 +166,7 @@ public class UsuarioController {
     	mav.setViewName("Telas/TelaSorteioControlador");
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
     	if(sorteio == null) {
+    		mav.addObject("novoSorteio", new Sorteio());
     		return mav;
     	}
     	
@@ -176,7 +177,7 @@ public class UsuarioController {
     	
     	mav.addObject("sorteio", sorteio);
     	mav.addObject("data", LocalDate.now());
-    	mav.addObject("novoSorteio", new Sorteio());
+    	
     	if(sorteio != null) {
     		mav.addObject("dataFormatada", sorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyy")));
     		mav.addObject("quantApostas", this.apostaRepository.getQuantidadeApostasSorteio(sorteio.getId()));

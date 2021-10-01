@@ -88,14 +88,5 @@ public class ApostaController {
         return mav;
     }
 
-//    @PostMapping("/criarApostasFavoritas")
-//    public ResponseEntity<?> criarApostaFavorita(@RequestBody ApostasFavoritasDTO dto) {
-//        this.apostaService.criarApostaFavorita(dto.getIdCliente(), dto.getIdAposta());
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-    
-//    @GetMapping("/listar-apostas-favoristas")
-//    public List<String> listarApostasFavoritas(@RequestParam Long idCliente) {
-//    	return this.apostaService.listarApostasFavoritas(idCliente);
-//    }
+
 }

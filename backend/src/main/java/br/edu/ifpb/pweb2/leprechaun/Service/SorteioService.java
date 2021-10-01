@@ -94,9 +94,6 @@ public class SorteioService {
 		if(hoje.isBefore(ultimoSorteio.getDataHora())) {
 			dto.setMensagem("O sorteio só poderá ser realizado no dia: " + ultimoSorteio.getDataHora().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		}
-//		if (ultimoSorteio.getDezenasSorteadas()!=null) {
-//			dto.setMensagem("Sorteio já realizado");			
-//		}
 		else {
 			if (tipoSorteio == TipoSorteio.ALEATORIO) {
 				dezenasEscolhidas = this.gerarNumeros();

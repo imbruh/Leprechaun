@@ -32,7 +32,7 @@ import br.edu.ifpb.pweb2.leprechaun.Model.TipoSorteio;
 import br.edu.ifpb.pweb2.leprechaun.Model.Usuario;
 import br.edu.ifpb.pweb2.leprechaun.Repository.SorteioRepository;
 import br.edu.ifpb.pweb2.leprechaun.Service.SorteioService;
-
+ 
 @Controller
 @RequestMapping("/sorteio")
 public class SorteioController {
@@ -50,8 +50,8 @@ public class SorteioController {
 
     @RequestMapping("/criar/{idControlador}")
     public String criarSorteio(@PathVariable Long idControlador, @ModelAttribute("novoSorteio") Sorteio novoSorteio, HttpSession session, ModelAndView mav, RedirectAttributes redirectAttributes) {
-    	
-        String mensagem = this.sorteioService.criarSorteio(idControlador, novoSorteio.getDataHora(), novoSorteio.getValorPremio());
+    	   	
+    	String mensagem = this.sorteioService.criarSorteio(idControlador, novoSorteio.getDataHora(), novoSorteio.getValorPremio());
       
         redirectAttributes.addFlashAttribute("mensagem", mensagem);
              

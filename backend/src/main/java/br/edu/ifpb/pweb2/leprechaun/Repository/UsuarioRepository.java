@@ -1,4 +1,4 @@
-package br.edu.ifpb.pweb2.leprechaun.Repository;
+ package br.edu.ifpb.pweb2.leprechaun.Repository;
 
 import java.util.List;
 import java.util.Optional;

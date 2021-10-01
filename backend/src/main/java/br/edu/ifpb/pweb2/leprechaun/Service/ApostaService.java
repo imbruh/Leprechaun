@@ -43,6 +43,13 @@ public class ApostaService {
 	 	
     	ApostaDTO dto = new ApostaDTO();
     	
+    	Usuario cliente = usuarioRepository.findById(idCliente).orElse(null);
+    	if(cliente == null) {
+    		dto.setMensagem("Usuario não encontrado");
+    		return dto;
+
+    	}
+    	
     	if(apostaDTO.getApostasFavoritas().get(0).equals("Ou escolha uma aposta favorita")) {
         	apostaDTO.getApostasFavoritas().clear();
         }
@@ -64,13 +71,7 @@ public class ApostaService {
     		numEscolhidos[i] = numeros.get(i);
     	}
     	
-    	Usuario cliente = usuarioRepository.findById(idCliente).orElse(null);
-    	if(cliente == null) {
-    		dto.setMensagem("Usuario não encontrado");
-    		return dto;
-
-    	}
-    	
+      	
     	Sorteio sorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
     	  	             
         int contNumeros = 0;
@@ -240,7 +241,7 @@ public class ApostaService {
         		dto.setNumerosApostados(this.formatarNumeros(aposta.getNumEscolhidos()));
         		dto.setIdSorteio(aposta.getSorteio().getId());
         		
-        		conferirDTO.add(dto);
+        		conferirDTO.add(dto); 
     		}	
     	}
    	
