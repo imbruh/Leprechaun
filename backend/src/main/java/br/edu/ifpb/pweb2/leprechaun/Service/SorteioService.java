@@ -36,6 +36,9 @@ public class SorteioService {
 	
 	public Sorteio getSorteioAberto() {
 		Sorteio sorteio = sorteioRepository.findFirstByOrderByDataHoraDesc();
+		if(sorteio == null) {
+			return null;
+		}
 		
 		if(sorteio.getDezenasSorteadas() == null) {
 			return sorteio;

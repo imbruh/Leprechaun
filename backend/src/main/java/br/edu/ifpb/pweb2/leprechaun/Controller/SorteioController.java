@@ -93,10 +93,9 @@ public class SorteioController {
     	if(sorteioDTO.getMensagem() != null && (sorteioDTO.getMensagem().equals("Não é permitido numeros iguais") || sorteioDTO.getMensagem().equals("Os números devem ser entre 01 e 60."))) {
     		
     		redirectAttributes.addFlashAttribute("mensagem", sorteioDTO.getMensagem());
-    		System.out.println("bbbbbb");
     		return "redirect:/sorteio/controlador";
     	}
-    	System.out.println("aaaaa");
+
 		redirectAttributes.addFlashAttribute("dezenasDTO", new DezenasDTO());
     	
     	String dezenas = Arrays.toString(sorteioDTO.getDezenasSorteadas());

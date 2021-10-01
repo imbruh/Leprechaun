@@ -58,13 +58,7 @@ public class UsuarioController {
     public List<Usuario> getClientes() {
         return this.usuarioService.getClientes();
     }
-
-//    @PostMapping("/usuario/cadastrar")
-//    public ResponseEntity<Usuario> cadastrarCliente(@RequestBody Usuario usuario){
-//        Usuario user = this.usuarioService.cadastrarUsuario(usuario);
-//        return new ResponseEntity<> (user, HttpStatus.OK);
-//    }
-    
+   
     @RequestMapping("/login")
     public String login(Model model, @ModelAttribute("mensagem") String mensagem) {
     	model.addAttribute("usuario", new Usuario());
@@ -93,15 +87,16 @@ public class UsuarioController {
     
     @RequestMapping("/cadastro/usuario")
     public String cadastrarUsuario(ModelAndView mav, @ModelAttribute("usuario") Usuario usuario, RedirectAttributes redirectAttributes, HttpSession session) {
-    	String mensagem = this.usuarioService.cadastrarUsuario(usuario);
-    	System.out.println(mensagem);
-  
+    	String mensagem = "";
     	
-//    		redirectAttributes.addFlashAttribute("mensagem", "Login ou senha inválidos");
-//    		mav.addObject("mensagem", "Login ou senha invalidos");
-//    		mav.setViewName("login");
-//    		return "redirect:/login";
+    	if(usuario.getTipoUsuario()==null) {
+    		mensagem = "Escolha um tipo de usuario.";
+    		redirectAttributes.addFlashAttribute("mensagem", mensagem);
+    		return "redirect:/cadastro";
+    	}
     	
+    	mensagem = this.usuarioService.cadastrarUsuario(usuario);
+   	
     	if(mensagem.equals("Você precisa ter 18 anos ou mais para se cadastrar.")) {
     		redirectAttributes.addFlashAttribute("mensagem", mensagem);
     		return "redirect:/cadastro";
@@ -110,8 +105,7 @@ public class UsuarioController {
     	redirectAttributes.addFlashAttribute("usuario", usuario);
     	
     	return "redirect:/login/usuario";
-    	
-        
+       
     }
   
     @RequestMapping("/login/usuario")
@@ -147,8 +141,11 @@ public class UsuarioController {
     	mav.addObject("usuario", usuario);
     	mav.setViewName("Telas/TelaSorteioCliente");
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
+    	if(sorteio == null) {
+    		return mav;
+    	}
     	
-    	if(sorteio!= null && sorteio.getDataHora().isBefore(LocalDate.now())) {
+    	if(sorteio.getDataHora().isBefore(LocalDate.now())) {
     		this.sorteioService.realizarSorteio(null, TipoSorteio.ALEATORIO, usuario.getId());
     		sorteio = null;
     	}
@@ -168,7 +165,11 @@ public class UsuarioController {
     	mav.addObject("usuario", usuario);
     	mav.setViewName("Telas/TelaSorteioControlador");
     	Sorteio sorteio = this.sorteioService.getSorteioAberto();
-    	if(sorteio!= null && sorteio.getDataHora().isBefore(LocalDate.now())) {
+    	if(sorteio == null) {
+    		return mav;
+    	}
+    	
+    	if(sorteio.getDataHora().isBefore(LocalDate.now())) {
     		this.sorteioService.realizarSorteio(null, TipoSorteio.ALEATORIO, usuario.getId());
     		sorteio = null;
     	}
